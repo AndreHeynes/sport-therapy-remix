@@ -4,7 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 const AboutSection = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+
+  const quote = language === 'sk'
+    ? 'Každý pacient má svoju jedinečnú príbeh. Moja úloha je počúvať, porozumieť a vytvoriť liečebný plán, ktorý nie je len efektívny, ale aj udržateľný pre váš životný štýl.'
+    : 'Every patient has their own unique story. My role is to listen, understand, and create a treatment plan that is not only effective but also sustainable for your lifestyle.';
+
+  const stats = [
+    { value: '25+', label: language === 'sk' ? 'Rokov skúseností' : 'Years Experience' },
+    { value: '4', label: language === 'sk' ? 'Krajiny' : 'Countries' },
+    { value: '1000+', label: language === 'sk' ? 'Spokojných pacientov' : 'Satisfied Patients' },
+    { value: '100%', label: language === 'sk' ? 'Individuálny prístup' : 'Individual Approach' },
+  ];
 
   return (
     <section id="about" className="py-20 bg-white">
@@ -27,28 +38,18 @@ const AboutSection = () => {
               
               <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-brand-teal">
                 <p className="text-gray-700 italic leading-relaxed">
-                  "Každý pacient má svoju jedinečnú príbeh. Moja úloha je počúvať, porozumieť a vytvoriť liečebný plán, ktorý nie je len efektívny, ale aj udržateľný pre váš životný štýl."
+                  "{quote}"
                 </p>
                 <p className="text-brand-teal font-medium mt-3">- André Heynes</p>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-6">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-brand-teal">25+</div>
-                  <div className="text-sm text-gray-600">Rokov skúseností</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-brand-teal">4</div>
-                  <div className="text-sm text-gray-600">Krajiny</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-brand-teal">1000+</div>
-                  <div className="text-sm text-gray-600">Spokojných pacientov</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-brand-teal">100%</div>
-                  <div className="text-sm text-gray-600">Individuálny prístup</div>
-                </div>
+                {stats.map((stat) => (
+                  <div key={stat.value} className="text-center">
+                    <div className="text-2xl font-bold text-brand-teal">{stat.value}</div>
+                    <div className="text-sm text-gray-600">{stat.label}</div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -69,23 +70,23 @@ const AboutSection = () => {
                     <div className="text-4xl">👨‍⚕️</div>
                   </div>
                   <h3 className="text-2xl font-heading font-bold mb-2">André Heynes</h3>
-                  <p className="text-white/90">Registered Physiotherapist</p>
+                  <p className="text-white/90">{language === 'sk' ? 'Registrovaný fyzioterapeut' : 'Registered Physiotherapist'}</p>
                   <div className="mt-6 space-y-2 text-sm">
-                    <p>🇿🇦 South Africa • 🇬🇧 United Kingdom</p>
-                    <p>🇦🇪 United Arab Emirates • 🇸🇰 Slovakia</p>
+                    <p>🇿🇦 {language === 'sk' ? 'Južná Afrika' : 'South Africa'} • 🇬🇧 {language === 'sk' ? 'Veľká Británia' : 'United Kingdom'}</p>
+                    <p>🇦🇪 {language === 'sk' ? 'Spojené arabské emiráty' : 'United Arab Emirates'} • 🇸🇰 {language === 'sk' ? 'Slovensko' : 'Slovakia'}</p>
                   </div>
                 </div>
               </div>
             </Card>
             
             <div className="absolute -right-4 top-8 bg-white rounded-lg shadow-lg p-4 border-l-4 border-brand-teal animate-pulse-slow">
-              <div className="text-xs font-semibold text-brand-teal">CERTIFIED</div>
-              <div className="text-sm font-medium">Sports Rehabilitation</div>
+              <div className="text-xs font-semibold text-brand-teal">{language === 'sk' ? 'CERTIFIKOVANÝ' : 'CERTIFIED'}</div>
+              <div className="text-sm font-medium">{language === 'sk' ? 'Športová rehabilitácia' : 'Sports Rehabilitation'}</div>
             </div>
             
             <div className="absolute -left-4 bottom-8 bg-white rounded-lg shadow-lg p-4 border-l-4 border-brand-teal animate-pulse-slow" style={{ animationDelay: '1s' }}>
-              <div className="text-xs font-semibold text-brand-teal">SPECIALIST</div>
-              <div className="text-sm font-medium">Manual Therapy</div>
+              <div className="text-xs font-semibold text-brand-teal">{language === 'sk' ? 'ŠPECIALISTA' : 'SPECIALIST'}</div>
+              <div className="text-sm font-medium">{language === 'sk' ? 'Manuálna terapia' : 'Manual Therapy'}</div>
             </div>
           </div>
         </div>

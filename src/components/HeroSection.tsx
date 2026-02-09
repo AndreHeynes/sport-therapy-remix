@@ -3,7 +3,13 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 
 const HeroSection = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+
+  const stats = [
+    { value: '25+', label: language === 'sk' ? 'Rokov skúseností' : 'Years Experience' },
+    { value: '4', label: language === 'sk' ? 'Krajiny' : 'Countries' },
+    { value: '1000+', label: language === 'sk' ? 'Vyliečených pacientov' : 'Patients Treated' },
+  ];
 
   return (
     <section id="home" className="relative bg-gradient-to-br from-brand-teal via-brand-teal-dark to-brand-teal text-white min-h-[90vh] flex items-center overflow-hidden">
@@ -45,18 +51,12 @@ const HeroSection = () => {
           </div>
 
           <div className="flex flex-wrap justify-center items-center gap-8 pt-8 animate-fade-in" style={{ animationDelay: '0.9s' }}>
-            <div className="glass-card bg-white/5 backdrop-blur-sm border-white/10 text-center floating-card">
-              <div className="text-3xl font-bold text-white gradient-text">25+</div>
-              <div className="text-sm text-white/80">Years Experience</div>
-            </div>
-            <div className="glass-card bg-white/5 backdrop-blur-sm border-white/10 text-center floating-card">
-              <div className="text-3xl font-bold text-white gradient-text">4</div>
-              <div className="text-sm text-white/80">Countries</div>
-            </div>
-            <div className="glass-card bg-white/5 backdrop-blur-sm border-white/10 text-center floating-card">
-              <div className="text-3xl font-bold text-white gradient-text">1000+</div>
-              <div className="text-sm text-white/80">Patients Treated</div>
-            </div>
+            {stats.map((stat) => (
+              <div key={stat.value} className="glass-card bg-white/5 backdrop-blur-sm border-white/10 text-center floating-card">
+                <div className="text-3xl font-bold text-white gradient-text">{stat.value}</div>
+                <div className="text-sm text-white/80">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
