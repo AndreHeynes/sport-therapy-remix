@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { BodyPart } from './bodyPartsData';
+import bodySilhouette from '@/assets/body-silhouette.png';
 
 interface BodyDiagramProps {
   bodyParts: BodyPart[];
@@ -14,30 +15,12 @@ const BodyDiagram: React.FC<BodyDiagramProps> = ({ bodyParts, selectedPart, onPa
     <Card className="shadow-lg">
       <CardContent className="p-8">
         <div className="relative w-full" style={{ paddingBottom: '150%' }}>
-          {/* Body outline SVG */}
-          <svg
-            viewBox="0 0 100 150"
-            className="absolute inset-0 w-full h-full"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="0.5"
-          >
-            {/* Simple body outline */}
-            {/* Head */}
-            <circle cx="50" cy="12" r="8" className="fill-gray-100 stroke-gray-300" />
-            {/* Neck */}
-            <rect x="47" y="20" width="6" height="5" className="fill-gray-100 stroke-gray-300" />
-            {/* Torso */}
-            <path d="M35 25 L65 25 L62 55 L38 55 Z" className="fill-gray-100 stroke-gray-300" />
-            {/* Left arm */}
-            <path d="M35 25 L25 35 L20 50 L22 50 L28 36 L37 27" className="fill-gray-100 stroke-gray-300" />
-            {/* Right arm */}
-            <path d="M65 25 L75 35 L80 50 L78 50 L72 36 L63 27" className="fill-gray-100 stroke-gray-300" />
-            {/* Left leg */}
-            <path d="M38 55 L35 75 L33 95 L37 95 L40 75 L42 55" className="fill-gray-100 stroke-gray-300" />
-            {/* Right leg */}
-            <path d="M58 55 L60 75 L63 95 L67 95 L65 75 L62 55" className="fill-gray-100 stroke-gray-300" />
-          </svg>
+          {/* Body silhouette image */}
+          <img
+            src={bodySilhouette}
+            alt="Body diagram"
+            className="absolute inset-0 w-full h-full object-contain opacity-80"
+          />
 
           {/* Clickable body part hotspots */}
           {bodyParts.map((part) => (
