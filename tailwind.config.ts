@@ -57,19 +57,26 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        "brand-teal": "hsl(var(--brand-teal))",
-        "brand-teal-dark": "hsl(var(--brand-teal-dark))",
-        "brand-teal-light": "hsl(var(--brand-teal-light))",
-        "brand-charcoal": "hsl(var(--brand-charcoal))",
+        "brand-teal": "#33c1a9",
+        "brand-teal-dark": "#2aa085",
+        "brand-teal-light": "#7dd3c0",
+        "brand-charcoal": "#2d3748",
+      },
+      fontFamily: {
+        heading: ['Montserrat', 'sans-serif'],
+        body: ['Open Sans', 'sans-serif'],
+      },
+      boxShadow: {
+        'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+        'multi-layer': '0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.1)',
+        'floating': '0 20px 40px rgba(0, 0, 0, 0.15)',
+        'glow': '0 0 15px rgba(51, 193, 169, 0.3)',
+        'glow-lg': '0 0 30px rgba(51, 193, 169, 0.4)',
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-      },
-      fontFamily: {
-        heading: ['Montserrat', 'sans-serif'],
-        body: ['Open Sans', 'sans-serif'],
       },
       keyframes: {
         "accordion-down": {

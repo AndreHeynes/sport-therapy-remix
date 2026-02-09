@@ -5,18 +5,18 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Lock, FileText, Database, Shield, Clock, Cookie } from 'lucide-react';
+import { Lock, Eye, Database, Share2, Clock, AlertCircle } from 'lucide-react';
 
 const PrivacyPolicy = () => {
   const { t } = useLanguage();
 
   const sections = [
     { icon: Database, title: t('privacy.data-collection.title'), content: t('privacy.data-collection.content') },
-    { icon: FileText, title: t('privacy.data-usage.title'), content: t('privacy.data-usage.content') },
-    { icon: Shield, title: t('privacy.data-sharing.title'), content: t('privacy.data-sharing.content') },
+    { icon: Eye, title: t('privacy.data-usage.title'), content: t('privacy.data-usage.content') },
+    { icon: Share2, title: t('privacy.data-sharing.title'), content: t('privacy.data-sharing.content') },
     { icon: Lock, title: t('privacy.data-security.title'), content: t('privacy.data-security.content') },
     { icon: Clock, title: t('privacy.data-retention.title'), content: t('privacy.data-retention.content') },
-    { icon: Cookie, title: t('privacy.cookies.title'), content: t('privacy.cookies.content') },
+    { icon: AlertCircle, title: t('privacy.cookies.title'), content: t('privacy.cookies.content') }
   ];
 
   return (
@@ -32,6 +32,7 @@ const PrivacyPolicy = () => {
               </div>
               <h1 className="text-4xl font-heading font-bold text-brand-charcoal mb-4">{t('privacy.title')}</h1>
               <p className="text-xl text-gray-600 leading-relaxed">{t('privacy.subtitle')}</p>
+              <p className="text-sm text-gray-500 mt-2">{t('privacy.last-updated')}: 26. júna 2024</p>
             </div>
             <div className="space-y-8">
               {sections.map((section, index) => (

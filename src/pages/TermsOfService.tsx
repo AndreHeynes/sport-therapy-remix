@@ -5,17 +5,17 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Briefcase, Users, AlertTriangle, RefreshCw } from 'lucide-react';
+import { FileText, Users, AlertTriangle, Scale, RefreshCw } from 'lucide-react';
 
 const TermsOfService = () => {
   const { t } = useLanguage();
 
   const sections = [
-    { icon: FileText, title: t('terms.acceptance.title'), content: t('terms.acceptance.content') },
-    { icon: Briefcase, title: t('terms.services.title'), content: t('terms.services.content') },
-    { icon: Users, title: t('terms.responsibilities.title'), content: t('terms.responsibilities.content') },
-    { icon: AlertTriangle, title: t('terms.liability.title'), content: t('terms.liability.content') },
-    { icon: RefreshCw, title: t('terms.modifications.title'), content: t('terms.modifications.content') },
+    { icon: Users, title: t('terms.acceptance.title'), content: t('terms.acceptance.content') },
+    { icon: FileText, title: t('terms.services.title'), content: t('terms.services.content') },
+    { icon: AlertTriangle, title: t('terms.responsibilities.title'), content: t('terms.responsibilities.content') },
+    { icon: Scale, title: t('terms.liability.title'), content: t('terms.liability.content') },
+    { icon: RefreshCw, title: t('terms.modifications.title'), content: t('terms.modifications.content') }
   ];
 
   return (
@@ -31,6 +31,7 @@ const TermsOfService = () => {
               </div>
               <h1 className="text-4xl font-heading font-bold text-brand-charcoal mb-4">{t('terms.title')}</h1>
               <p className="text-xl text-gray-600 leading-relaxed">{t('terms.subtitle')}</p>
+              <p className="text-sm text-gray-500 mt-2">{t('terms.last-updated')}: 26. júna 2024</p>
             </div>
             <div className="space-y-8">
               {sections.map((section, index) => (
