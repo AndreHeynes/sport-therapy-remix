@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 const Header = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -20,7 +21,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <span className="text-xl font-heading font-bold text-brand-charcoal">Šport & Body Terapia</span>
+            <img src={logo} alt="Šport & Body Terapia" className="h-12 w-auto" />
           </div>
 
           <nav className="hidden lg:flex items-center space-x-8">
