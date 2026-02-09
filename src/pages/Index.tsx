@@ -1,13 +1,34 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import React from 'react';
+import { HelmetProvider } from 'react-helmet-async';
+import SEO from '@/components/SEO';
+import Header from '@/components/Header';
+import HeroSection from '@/components/HeroSection';
+import ServicesSection from '@/components/ServicesSection';
+import AboutSection from '@/components/AboutSection';
+import InteractiveBodyMap from '@/components/InteractiveBodyMap';
+import PatientResourcesSection from '@/components/PatientResourcesSection';
+import ContactSection from '@/components/ContactSection';
+import Footer from '@/components/Footer';
+import CookieConsent from '@/components/CookieConsent';
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <HelmetProvider>
+      <div className="min-h-screen bg-white font-body">
+        <SEO />
+        <Header />
+        <main>
+          <HeroSection />
+          <ServicesSection />
+          <AboutSection />
+          <InteractiveBodyMap />
+          <PatientResourcesSection />
+          <ContactSection />
+        </main>
+        <Footer />
+        <CookieConsent />
       </div>
-    </div>
+    </HelmetProvider>
   );
 };
 
