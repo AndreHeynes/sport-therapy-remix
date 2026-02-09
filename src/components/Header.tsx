@@ -17,7 +17,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="glass-header backdrop-blur-lg bg-white/80 shadow-multi-layer sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -37,7 +37,7 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 glass rounded-lg p-1 shadow-glass">
+            <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
               <button
                 onClick={() => setLanguage('sk')}
                 className={`px-3 py-1 rounded-md text-sm font-medium transition-all duration-300 ${
