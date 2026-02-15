@@ -51,7 +51,7 @@ const GDPRCompliance = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex items-center gap-3"><Mail className="text-brand-teal" size={20} /><span>info@sportbodyterapia.sk</span></div>
+                    <div className="flex items-center gap-3"><Mail className="text-brand-teal" size={20} /><span>info@sportandbodyterapia.org</span></div>
                     <div className="flex items-center gap-3"><Phone className="text-brand-teal" size={20} /><span>+421 949 291 013</span></div>
                     <p className="text-gray-600 mt-4">{t('gdpr.contact.description')}</p>
                   </div>

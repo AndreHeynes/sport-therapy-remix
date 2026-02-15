@@ -33,7 +33,7 @@ const ContactSection = () => {
       const body = encodeURIComponent(
         `Name: ${validatedData.name}\nEmail: ${validatedData.email}\nPhone: ${validatedData.phone || 'Not provided'}\n\nMessage:\n${validatedData.message}`
       );
-      window.location.href = `mailto:info@sportbodyterapia.sk?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:info@sportandbodyterapia.org?subject=${subject}&body=${body}`;
       toast({ title: t('contact.success.title'), description: t('contact.success.description') });
       setFormData({ name: '', email: '', phone: '', message: '' });
     } catch (error) {
@@ -120,7 +120,7 @@ const ContactSection = () => {
                   <div className="text-brand-teal text-xl">✉️</div>
                   <div>
                     <h4 className="font-semibold text-brand-charcoal">{t('contact.email')}</h4>
-                    <a href="mailto:info@sportbodyterapia.sk" className="text-brand-teal hover:underline">info@sportbodyterapia.sk</a>
+                    <a href="mailto:info@sportandbodyterapia.org" className="text-brand-teal hover:underline">info@sportandbodyterapia.org</a>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
