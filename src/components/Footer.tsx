@@ -33,7 +33,7 @@ const Footer = () => {
               <p>{t('footer.address')}</p>
               <p><a href="tel:+421949291013" className="hover:text-brand-teal transition-colors">Tel: 0949 291 013</a></p>
               <p><a href="tel:+421948842420" className="hover:text-brand-teal transition-colors">Tel: 0948 842 420</a></p>
-              <p><a href="mailto:info@sportbodyterapia.sk" className="hover:text-brand-teal transition-colors">Email: info@sportbodyterapia.sk</a></p>
+              <p><a href="mailto:info@sportandbodyterapia.org" className="hover:text-brand-teal transition-colors">Email: info@sportandbodyterapia.org</a></p>
             </div>
           </div>
 

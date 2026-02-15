@@ -25,7 +25,7 @@ const SEO = ({ title, description, keywords, canonical, ogImage, type = 'website
 
   const siteTitle = title ? `${title} | ${defaultTitles[language]}` : defaultTitles[language];
   const siteDescription = description || defaultDescriptions[language];
-  const siteUrl = 'https://sportbodyterapia.sk';
+  const siteUrl = 'https://sportandbodyterapia.org';
 
   return (
     <Helmet>

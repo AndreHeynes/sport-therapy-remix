@@ -30,7 +30,7 @@ const PatientResourcesSection = () => {
       const validatedData = newsletterSchema.parse({ email: newsletterEmail });
       const subject = encodeURIComponent('Newsletter Subscription Request');
       const body = encodeURIComponent(`Please add this email to the newsletter list:\n\n${validatedData.email}`);
-      window.location.href = `mailto:info@sportbodyterapia.sk?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:info@sportandbodyterapia.org?subject=${subject}&body=${body}`;
       toast({
         title: language === 'sk' ? 'Ďakujeme!' : 'Thank you!',
         description: language === 'sk' ? 'Váš e-mail bol zaznamenaný.' : 'Your email has been recorded.',
