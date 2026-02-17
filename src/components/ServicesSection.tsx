@@ -68,8 +68,8 @@ const ServicesSection = () => {
                   variant="outline" 
                   className="border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white transition-all duration-300"
                   onClick={() => {
-                    if (service.id === 'musculoskeletal') {
-                      setOpenServiceId('musculoskeletal');
+                    if (service.id === 'musculoskeletal' || service.id === 'postop') {
+                      setOpenServiceId(service.id);
                     } else {
                       document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
                     }
@@ -83,11 +83,13 @@ const ServicesSection = () => {
         </div>
       </div>
 
-      <ServiceDetailDialog
-        open={openServiceId === 'musculoskeletal'}
-        onOpenChange={(open) => !open && setOpenServiceId(null)}
-        serviceId="musculoskeletal"
-      />
+      {openServiceId && (
+        <ServiceDetailDialog
+          open={true}
+          onOpenChange={(open) => !open && setOpenServiceId(null)}
+          serviceId={openServiceId}
+        />
+      )}
     </section>
   );
 };
