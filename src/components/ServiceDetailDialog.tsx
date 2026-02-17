@@ -183,6 +183,150 @@ const serviceContent: Record<string, { en: React.ReactNode; sk: React.ReactNode 
       </div>
     ),
   },
+  postop: {
+    en: (
+      <div className="space-y-8 text-brand-charcoal">
+        <p className="text-lg leading-relaxed text-muted-foreground">
+          The surgery was the first step—now the real work begins. Whether you've just had a joint replacement, an ACL reconstruction, or spinal surgery, the "success" of your procedure isn't just determined by the surgeon's hands, but by how you move in the weeks and months that follow.
+        </p>
+        <p className="text-lg leading-relaxed text-muted-foreground">
+          As specialists in post-operative musculoskeletal physiotherapy, we bridge the gap between the operating theater and your return to daily life, sport, or work. Here is how we help you navigate the road to recovery.
+        </p>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Why Specialized Post-Op Care Matters</h3>
+          <p className="text-muted-foreground mb-3">
+            Surgery creates a controlled trauma to the body. While the "fix" is in place, your muscles are often inhibited, your joints are stiff, and your brain's connection to those movement patterns is temporarily disrupted.
+          </p>
+          <p className="text-muted-foreground">
+            Generic exercises aren't enough. You need a phased approach that respects biological healing timelines while pushing for optimal function.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Our Three-Phase Approach to Your Recovery</h3>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-brand-teal/10">
+                  <th className="border border-border p-3 text-left font-heading">Phase</th>
+                  <th className="border border-border p-3 text-left font-heading">Goal</th>
+                  <th className="border border-border p-3 text-left font-heading">What We Do</th>
+                </tr>
+              </thead>
+              <tbody className="text-muted-foreground">
+                <tr><td className="border border-border p-3 font-medium">1. Protection &amp; Mobility</td><td className="border border-border p-3">Reduce swelling and regain basic range of motion.</td><td className="border border-border p-3">Gentle manual therapy, swelling management, and "activation" exercises to wake up dormant muscles.</td></tr>
+                <tr><td className="border border-border p-3 font-medium">2. Strength &amp; Loading</td><td className="border border-border p-3">Rebuild the muscle tissue lost during the injury and surgery.</td><td className="border border-border p-3">Progressive resistance training tailored to your specific surgical precautions.</td></tr>
+                <tr><td className="border border-border p-3 font-medium">3. Functional Return</td><td className="border border-border p-3">Get you back to your specific "gold standard" of movement.</td><td className="border border-border p-3">Sport-specific drills, balance work, and high-level conditioning to ensure long-term success.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">What We Can Offer You</h3>
+          <p className="text-muted-foreground mb-3">We don't just give you a photocopied sheet of exercises. Our care is defined by:</p>
+          <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
+            <li><strong>Expert Protocol Management:</strong> We speak the language of surgeons. We follow (and adapt) specific surgical protocols to ensure we never overstress a healing graft or implant.</li>
+            <li><strong>Pain Management Techniques:</strong> Using a mix of manual therapy and movement, we help you transition off post-op medications faster.</li>
+            <li><strong>Biomechanical Analysis:</strong> We look at the whole person. If you had knee surgery, we're looking at your hip and ankle to make sure they aren't "cheating" and causing future issues.</li>
+            <li><strong>Confidence Building:</strong> The "fear of re-injury" is a major hurdle. We provide a safe environment to test your limits so you can trust your body again.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Getting You Back to "Your Normal"</h3>
+          <p className="text-muted-foreground mb-4">
+            "Success" looks different for everyone. For some, it's walking the dog without a limp; for others, it's returning to competitive rugby or a heavy lifting program. Our job is to understand your specific "why" and build the roadmap to get you there.
+          </p>
+          <p className="text-sm text-muted-foreground italic bg-muted/50 p-4 rounded-lg">
+            <strong>Important Note:</strong> Early intervention is key. Even if you are still in a brace or on crutches, starting the right kind of movement early can significantly shorten your total recovery time.
+          </p>
+        </div>
+
+        <div className="bg-brand-teal/5 border border-brand-teal/20 rounded-xl p-6 text-center">
+          <h3 className="text-2xl font-heading font-bold mb-3">Are you ready to start your recovery journey on the right foot?</h3>
+          <Button
+            className="btn-shine text-white font-medium px-8 py-3"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Book a Consultation
+          </Button>
+        </div>
+      </div>
+    ),
+    sk: (
+      <div className="space-y-8 text-brand-charcoal">
+        <p className="text-lg leading-relaxed text-muted-foreground">
+          Operácia bola prvým krokom — teraz začína skutočná práca. Či už ste práve absolvovali výmenu kĺbu, rekonštrukciu ACL alebo operáciu chrbtice, „úspech" vášho zákroku nie je určený len rukami chirurga, ale tým, ako sa hýbete v týždňoch a mesiacoch, ktoré nasledujú.
+        </p>
+        <p className="text-lg leading-relaxed text-muted-foreground">
+          Ako špecialisti na pooperačnú muskuloskeletálnu fyzioterapiu premosťujeme priepasť medzi operačnou sálou a vaším návratom do bežného života, športu alebo práce. Tu je návod, ako vám pomôžeme zvládnuť cestu k zotaveniu.
+        </p>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Prečo záleží na špecializovanej pooperačnej starostlivosti</h3>
+          <p className="text-muted-foreground mb-3">
+            Operácia vytvára kontrolovanú traumu tela. Zatiaľ čo „oprava" je na mieste, vaše svaly sú často inhibované, kĺby stuhnuté a spojenie vášho mozgu s týmito pohybovými vzorcami je dočasne narušené.
+          </p>
+          <p className="text-muted-foreground">
+            Všeobecné cvičenia nestačia. Potrebujete fázový prístup, ktorý rešpektuje biologické časové rámce hojenia a zároveň tlačí na optimálnu funkciu.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Náš trojfázový prístup k vášmu zotaveniu</h3>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-brand-teal/10">
+                  <th className="border border-border p-3 text-left font-heading">Fáza</th>
+                  <th className="border border-border p-3 text-left font-heading">Cieľ</th>
+                  <th className="border border-border p-3 text-left font-heading">Čo robíme</th>
+                </tr>
+              </thead>
+              <tbody className="text-muted-foreground">
+                <tr><td className="border border-border p-3 font-medium">1. Ochrana a mobilita</td><td className="border border-border p-3">Zníženie opuchu a obnovenie základného rozsahu pohybu.</td><td className="border border-border p-3">Jemná manuálna terapia, manažment opuchu a „aktivačné" cvičenia na prebudenie spiaceho svalstva.</td></tr>
+                <tr><td className="border border-border p-3 font-medium">2. Sila a zaťažovanie</td><td className="border border-border p-3">Obnovenie svalového tkaniva strateného počas zranenia a operácie.</td><td className="border border-border p-3">Progresívny odporový tréning prispôsobený vašim špecifickým chirurgickým opatreniam.</td></tr>
+                <tr><td className="border border-border p-3 font-medium">3. Funkčný návrat</td><td className="border border-border p-3">Vrátiť vás k vášmu špecifickému „zlatému štandardu" pohybu.</td><td className="border border-border p-3">Športovo špecifické cvičenia, práca s rovnováhou a kondičný tréning na vysokej úrovni.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Čo vám môžeme ponúknuť</h3>
+          <p className="text-muted-foreground mb-3">Nedávame vám len ofotený hárok cvičení. Naša starostlivosť je definovaná:</p>
+          <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
+            <li><strong>Expertný manažment protokolov:</strong> Hovoríme jazykom chirurgov. Dodržiavame (a prispôsobujeme) špecifické chirurgické protokoly, aby sme nikdy nepreťažili hojaci sa štep alebo implantát.</li>
+            <li><strong>Techniky manažmentu bolesti:</strong> Kombináciou manuálnej terapie a pohybu vám pomáhame rýchlejšie prejsť z pooperačných liekov.</li>
+            <li><strong>Biomechanická analýza:</strong> Pozeráme sa na celého človeka. Ak ste mali operáciu kolena, pozeráme sa na váš bedrový kĺb a členok, aby sme sa uistili, že „nepodvádzajú" a nespôsobujú budúce problémy.</li>
+            <li><strong>Budovanie sebadôvery:</strong> „Strach z opätovného zranenia" je veľká prekážka. Poskytujeme bezpečné prostredie na testovanie vašich limitov, aby ste mohli opäť dôverovať svojmu telu.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Vrátime vás k „vášmu normálu"</h3>
+          <p className="text-muted-foreground mb-4">
+            „Úspech" vyzerá pre každého inak. Pre niektorých je to prechádzka so psom bez krívania; pre iných je to návrat ku kompetitívnemu rugby alebo programu ťažkého zdvíhania. Našou úlohou je pochopiť vaše konkrétne „prečo" a vybudovať cestovnú mapu, ako sa tam dostať.
+          </p>
+          <p className="text-sm text-muted-foreground italic bg-muted/50 p-4 rounded-lg">
+            <strong>Dôležitá poznámka:</strong> Včasná intervencia je kľúčová. Aj keď ste stále v ortéze alebo na barlách, začatie správneho druhu pohybu včas môže výrazne skrátiť celkový čas zotavenia.
+          </p>
+        </div>
+
+        <div className="bg-brand-teal/5 border border-brand-teal/20 rounded-xl p-6 text-center">
+          <h3 className="text-2xl font-heading font-bold mb-3">Ste pripravení začať cestu k zotaveniu správnou nohou?</h3>
+          <Button
+            className="btn-shine text-white font-medium px-8 py-3"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Objednajte sa na konzultáciu
+          </Button>
+        </div>
+      </div>
+    ),
+  },
 };
 
 const ServiceDetailDialog: React.FC<ServiceDetailDialogProps> = ({ open, onOpenChange, serviceId }) => {
@@ -193,6 +337,7 @@ const ServiceDetailDialog: React.FC<ServiceDetailDialogProps> = ({ open, onOpenC
 
   const titles: Record<string, string> = {
     musculoskeletal: t('services.musculoskeletal'),
+    postop: t('services.postop'),
   };
 
   return (
