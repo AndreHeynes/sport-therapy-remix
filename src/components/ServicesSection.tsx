@@ -67,13 +67,7 @@ const ServicesSection = () => {
                 <Button 
                   variant="outline" 
                   className="border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white transition-all duration-300"
-                  onClick={() => {
-                    if (service.id === 'musculoskeletal' || service.id === 'postop') {
-                      setOpenServiceId(service.id);
-                    } else {
-                      document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
+                  onClick={() => setOpenServiceId(service.id)}
                 >
                   {language === 'sk' ? 'Zistiť viac' : 'Learn more'}
                 </Button>
