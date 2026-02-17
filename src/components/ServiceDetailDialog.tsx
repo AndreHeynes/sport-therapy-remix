@@ -327,6 +327,168 @@ const serviceContent: Record<string, { en: React.ReactNode; sk: React.ReactNode 
       </div>
     ),
   },
+  sports: {
+    en: (
+      <div className="space-y-8 text-brand-charcoal">
+        <p className="text-lg leading-relaxed text-muted-foreground">
+          Whether you're a professional athlete chasing a personal best or a "weekend warrior" just trying to stay active, nothing hits quite as hard as an injury. One day you're in the flow; the next, you're on the sidelines, wondering if your knee will ever feel the same.
+        </p>
+        <p className="text-lg leading-relaxed text-muted-foreground">
+          At our clinic, we don't just "fix" injuries—we rebuild athletes. As specialist sports physiotherapists, we understand that your goals aren't just about walking without pain; they're about returning to the pitch, the track, or the gym stronger than you were before.
+        </p>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Beyond the Ice Pack: Modern Treatment in 2026</h3>
+          <p className="text-muted-foreground mb-4">
+            The old advice of "just rest and ice it" is, frankly, outdated. While rest has its place, modern sports science has shifted toward <strong>Active Recovery</strong>. We follow the PEACE & LOVE protocol, moving away from total immobilization toward guided, pain-free movement that keeps your tissues resilient.
+          </p>
+          <h4 className="text-xl font-heading font-semibold mb-3 text-brand-teal">How We Approach Your Recovery:</h4>
+          <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
+            <li><strong>Precision Diagnosis:</strong> We use biomechanical screening and movement analysis to find the <em>why</em> behind the <em>what</em>.</li>
+            <li><strong>Manual Therapy:</strong> Hands-on techniques to reduce neuromuscular inhibition and manage pain early on.</li>
+            <li><strong>Graduated Loading:</strong> We don't just wait for it to stop hurting. We find the "sweet spot" of stress that helps your tendons and muscles adapt and heal faster.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Prevention: The "Prehab" Revolution</h3>
+          <p className="text-muted-foreground mb-4">
+            The best injury is the one that never happens. In 2026, we focus heavily on <strong>Prehabilitation</strong>. If you only see a physio when you're broken, you're missing out on half the value we provide.
+          </p>
+          <p className="text-sm text-muted-foreground italic bg-muted/50 p-4 rounded-lg mb-6">
+            <strong>Expert Tip:</strong> Research shows that sport-specific neuromuscular training can reduce the risk of non-contact ACL injuries by up to 50%.
+          </p>
+          <h4 className="text-xl font-heading font-semibold mb-3 text-brand-teal">Our Prevention Toolkit</h4>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-brand-teal/10">
+                  <th className="border border-border p-3 text-left font-heading">Feature</th>
+                  <th className="border border-border p-3 text-left font-heading">Benefit to You</th>
+                </tr>
+              </thead>
+              <tbody className="text-muted-foreground">
+                <tr><td className="border border-border p-3 font-medium">Gait & Video Analysis</td><td className="border border-border p-3">Identifies "leakage" in your running form that leads to overuse injuries.</td></tr>
+                <tr><td className="border border-border p-3 font-medium">Strength & Conditioning</td><td className="border border-border p-3">Targets your "weak links" (like glute medius or core stability) before they fail.</td></tr>
+                <tr><td className="border border-border p-3 font-medium">Load Management</td><td className="border border-border p-3">We help you navigate the 10% rule, ensuring your training volume doesn't outpace your recovery.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">What Sets a Specialist Apart?</h3>
+          <p className="text-muted-foreground mb-3">
+            You might wonder: "Can't I just see a general physio?" While generalists are great for everyday aches, a <strong>Specialist Sports Physiotherapist</strong> understands the unique demands of your specific sport.
+          </p>
+          <p className="text-muted-foreground">
+            We know the difference between the explosive power needed for a 100m sprint and the endurance required for an Ironman. We don't just get you "better"; we get you <strong>game-ready</strong>. We analyze your technique—your swing, your stride, your lift—to ensure that when you return, you aren't just repeating the same patterns that led to the injury in the first place.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">The Path Back to Peak Performance</h3>
+          <p className="text-muted-foreground">
+            Recovery isn't a straight line, but it should be a planned one. Our return-to-play protocols are data-driven. We use objective metrics—strength ratios, hop tests, and even wearable data—to ensure you're truly ready to go full-tilt.
+          </p>
+          <p className="text-muted-foreground mt-3 font-semibold">We don't just clear you to play; we prepare you to win.</p>
+        </div>
+
+        <div className="bg-brand-teal/5 border border-brand-teal/20 rounded-xl p-6 text-center">
+          <h3 className="text-2xl font-heading font-bold mb-3">Ready to get back in the game?</h3>
+          <p className="text-muted-foreground mb-4">
+            If you're currently nursing an injury or want to ensure your body is ready for your next big challenge, let's talk. We're here to help you move better, perform higher, and stay on the field.
+          </p>
+          <Button
+            className="btn-shine text-white font-medium px-8 py-3"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Book a Consultation
+          </Button>
+        </div>
+      </div>
+    ),
+    sk: (
+      <div className="space-y-8 text-brand-charcoal">
+        <p className="text-lg leading-relaxed text-muted-foreground">
+          Či už ste profesionálny športovec, ktorý sa snaží o osobný rekord, alebo „víkendový bojovník", ktorý sa len snaží zostať aktívny, nič nezasiahne tak tvrdo ako zranenie. Jeden deň ste v rytme; ďalší deň sedíte na lavičke a premýšľate, či sa vaše koleno bude niekedy cítiť rovnako.
+        </p>
+        <p className="text-lg leading-relaxed text-muted-foreground">
+          V našej klinike len „neopravujeme" zranenia — obnovujeme športovcov. Ako špecialisti na športovú fyzioterapiu chápeme, že vaše ciele nie sú len o chôdzi bez bolesti; sú o návrate na ihrisko, na dráhu alebo do posilňovne silnejší, než ste boli predtým.
+        </p>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Za ľadovým obkladom: Moderná liečba v roku 2026</h3>
+          <p className="text-muted-foreground mb-4">
+            Stará rada „len si odpočiňte a priložte ľad" je úprimne povedané zastaraná. Hoci odpočinok má svoje miesto, moderná športová veda sa posunula smerom k <strong>aktívnemu zotaveniu</strong>. Dodržiavame protokol PEACE & LOVE, pričom sa vzďaľujeme od úplnej imobilizácie smerom k riadenému, bezbolestnému pohybu, ktorý udržuje vaše tkanivá odolné.
+          </p>
+          <h4 className="text-xl font-heading font-semibold mb-3 text-brand-teal">Ako pristupujeme k vášmu zotaveniu:</h4>
+          <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
+            <li><strong>Presná diagnostika:</strong> Používame biomechanický screening a analýzu pohybu na nájdenie <em>prečo</em> za <em>čo</em>.</li>
+            <li><strong>Manuálna terapia:</strong> Manuálne techniky na zníženie neuromuskulárnej inhibície a včasné zvládanie bolesti.</li>
+            <li><strong>Postupné zaťažovanie:</strong> Nečakáme len, kým to prestane bolieť. Nájdeme „sladký bod" záťaže, ktorý pomáha vašim šľachám a svalom prispôsobiť sa a hojiť sa rýchlejšie.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Prevencia: Revolúcia „Prehabilitácie"</h3>
+          <p className="text-muted-foreground mb-4">
+            Najlepšie zranenie je to, ktoré sa nikdy nestane. V roku 2026 sa intenzívne zameriavame na <strong>prehabilitáciu</strong>. Ak navštevujete fyzioterapeuta len keď ste „rozbití", prichádzate o polovicu hodnoty, ktorú poskytujeme.
+          </p>
+          <p className="text-sm text-muted-foreground italic bg-muted/50 p-4 rounded-lg mb-6">
+            <strong>Tip odborníka:</strong> Výskum ukazuje, že športovo špecifický neuromuskulárny tréning môže znížiť riziko bezkontaktných zranení ACL až o 50%.
+          </p>
+          <h4 className="text-xl font-heading font-semibold mb-3 text-brand-teal">Naša sada preventívnych nástrojov</h4>
+          <div className="overflow-x-auto mb-6">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-brand-teal/10">
+                  <th className="border border-border p-3 text-left font-heading">Funkcia</th>
+                  <th className="border border-border p-3 text-left font-heading">Prínos pre vás</th>
+                </tr>
+              </thead>
+              <tbody className="text-muted-foreground">
+                <tr><td className="border border-border p-3 font-medium">Analýza chôdze a videa</td><td className="border border-border p-3">Identifikuje „úniky" vo vašej bežeckej forme, ktoré vedú k zraneniam z preťaženia.</td></tr>
+                <tr><td className="border border-border p-3 font-medium">Silový a kondičný tréning</td><td className="border border-border p-3">Zameriava sa na vaše „slabé články" (ako gluteus medius alebo stabilitu jadra) skôr, než zlyhajú.</td></tr>
+                <tr><td className="border border-border p-3 font-medium">Manažment záťaže</td><td className="border border-border p-3">Pomôžeme vám navigovať pravidlo 10%, aby váš tréningový objem nepredbiehal vaše zotavenie.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Čo odlišuje špecialistu?</h3>
+          <p className="text-muted-foreground mb-3">
+            Možno sa pýtate: „Nemôžem jednoducho ísť k všeobecnému fyzioterapeutovi?" Hoci všeobecní odborníci sú skvelí pre každodenné bolesti, <strong>špecialista na športovú fyzioterapiu</strong> rozumie jedinečným požiadavkám vášho konkrétneho športu.
+          </p>
+          <p className="text-muted-foreground">
+            Poznáme rozdiel medzi výbušnou silou potrebnou na 100m šprint a vytrvalosťou potrebnou na Ironman. Nedostaneme vás len do „lepšieho" stavu; dostaneme vás do stavu <strong>pripraveného na zápas</strong>. Analyzujeme vašu techniku — váš švih, váš krok, váš zdvih — aby sme zabezpečili, že keď sa vrátite, nebudete len opakovať rovnaké vzorce, ktoré viedli k zraneniu.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-2xl font-heading font-bold mb-4">Cesta späť k vrcholovému výkonu</h3>
+          <p className="text-muted-foreground">
+            Zotavenie nie je priamka, ale malo by byť naplánované. Naše protokoly návratu do hry sú založené na dátach. Používame objektívne metriky — pomery sily, testy skokov a dokonca dáta z nositeľných zariadení — aby sme zabezpečili, že ste naozaj pripravení ísť naplno.
+          </p>
+          <p className="text-muted-foreground mt-3 font-semibold">Nedávame vám len povolenie hrať; pripravíme vás na víťazstvo.</p>
+        </div>
+
+        <div className="bg-brand-teal/5 border border-brand-teal/20 rounded-xl p-6 text-center">
+          <h3 className="text-2xl font-heading font-bold mb-3">Ste pripravení vrátiť sa do hry?</h3>
+          <p className="text-muted-foreground mb-4">
+            Ak momentálne liečite zranenie alebo chcete zabezpečiť, že vaše telo je pripravené na vašu ďalšiu veľkú výzvu, porozprávajme sa. Sme tu, aby sme vám pomohli hýbať sa lepšie, podávať vyšší výkon a zostať na ihrisku.
+          </p>
+          <Button
+            className="btn-shine text-white font-medium px-8 py-3"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Objednajte sa na konzultáciu
+          </Button>
+        </div>
+      </div>
+    ),
+  },
 };
 
 const ServiceDetailDialog: React.FC<ServiceDetailDialogProps> = ({ open, onOpenChange, serviceId }) => {
@@ -338,6 +500,7 @@ const ServiceDetailDialog: React.FC<ServiceDetailDialogProps> = ({ open, onOpenC
   const titles: Record<string, string> = {
     musculoskeletal: t('services.musculoskeletal'),
     postop: t('services.postop'),
+    sports: t('services.sports'),
   };
 
   return (
