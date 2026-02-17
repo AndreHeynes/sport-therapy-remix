@@ -1,25 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import ServiceDetailDialog from '@/components/ServiceDetailDialog';
 
 const ServicesSection = () => {
   const { t, language } = useLanguage();
+  const [openServiceId, setOpenServiceId] = useState<string | null>(null);
 
   const services = [
     {
+      id: 'musculoskeletal',
       title: t('services.musculoskeletal'),
       description: t('services.musculoskeletal.desc'),
       icon: '🦴',
       gradient: 'from-brand-teal to-brand-teal-dark'
     },
     {
+      id: 'postop',
       title: t('services.postop'),
       description: t('services.postop.desc'),
       icon: '🏥',
       gradient: 'from-brand-teal-dark to-brand-teal'
     },
     {
+      id: 'sports',
       title: t('services.sports'),
       description: t('services.sports.desc'),
       icon: '⚽',
@@ -62,7 +67,13 @@ const ServicesSection = () => {
                 <Button 
                   variant="outline" 
                   className="border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white transition-all duration-300"
-                  onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => {
+                    if (service.id === 'musculoskeletal') {
+                      setOpenServiceId('musculoskeletal');
+                    } else {
+                      document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
                 >
                   {language === 'sk' ? 'Zistiť viac' : 'Learn more'}
                 </Button>
@@ -71,6 +82,12 @@ const ServicesSection = () => {
           ))}
         </div>
       </div>
+
+      <ServiceDetailDialog
+        open={openServiceId === 'musculoskeletal'}
+        onOpenChange={(open) => !open && setOpenServiceId(null)}
+        serviceId="musculoskeletal"
+      />
     </section>
   );
 };
