@@ -13,6 +13,7 @@ import TermsOfService from "./pages/TermsOfService";
 import MedicalDisclaimer from "./pages/MedicalDisclaimer";
 import CookiePolicy from "./pages/CookiePolicy";
 import Admin from "./pages/Admin";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
             <Route path="/article/:articleId" element={<Article />} />
             <Route path="/gdpr-compliance" element={<GDPRCompliance />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

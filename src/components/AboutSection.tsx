@@ -53,13 +53,14 @@ const AboutSection = () => {
               </div>
             </div>
 
-            <Button 
-              size="lg"
-              className="bg-brand-teal hover:bg-brand-teal-dark text-white font-semibold px-8 py-4"
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              {t('about.learn-more')}
-            </Button>
+            <a href="/about">
+              <Button 
+                size="lg"
+                className="bg-brand-teal hover:bg-brand-teal-dark text-white font-semibold px-8 py-4"
+              >
+                {t('about.learn-more')}
+              </Button>
+            </a>
           </div>
 
           <div className="relative">
