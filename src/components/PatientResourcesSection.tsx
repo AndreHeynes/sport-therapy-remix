@@ -16,7 +16,8 @@ const PatientResourcesSection = () => {
   const { t, language } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { data: articles, isLoading } = usePublishedArticles();
+  const { data: allArticles, isLoading } = usePublishedArticles();
+  const articles = allArticles?.slice(0, 2);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterError, setNewsletterError] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(false);
