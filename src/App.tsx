@@ -14,6 +14,7 @@ import MedicalDisclaimer from "./pages/MedicalDisclaimer";
 import CookiePolicy from "./pages/CookiePolicy";
 import Admin from "./pages/Admin";
 import About from "./pages/About";
+import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
