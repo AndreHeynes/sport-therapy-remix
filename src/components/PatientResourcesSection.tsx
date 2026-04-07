@@ -100,6 +100,18 @@ const PatientResourcesSection = () => {
           </div>
         )}
 
+        {!isLoading && articles && articles.length > 0 && (
+          <div className="text-center mt-10">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white transition-all duration-300"
+              onClick={() => navigate('/blog')}
+            >
+              {language === 'sk' ? 'Zobraziť všetky články' : 'View All Articles'}
+            </Button>
+          </div>
+        )}
         <div className="mt-16 max-w-4xl mx-auto">
           <Card className="bg-gradient-to-r from-brand-teal to-brand-teal-dark text-white overflow-hidden">
             <CardContent className="p-8 text-center">
