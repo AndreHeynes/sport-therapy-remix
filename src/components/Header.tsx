@@ -94,14 +94,16 @@ const Header = () => {
           <nav className="lg:hidden mt-4 pb-4 border-t border-white/20">
             <div className="pt-4 space-y-3 glass-card">
               {navigationItems.map((item) => (
-                <a
+                <button
                   key={item.key}
-                  href={item.href}
-                  className="block text-brand-charcoal hover:text-brand-teal transition-all duration-300 font-medium py-2 px-3 rounded-lg hover:bg-white/30"
-                  onClick={() => setIsMenuOpen(false)}
+                  className="block w-full text-left text-brand-charcoal hover:text-brand-teal transition-all duration-300 font-medium py-2 px-3 rounded-lg hover:bg-white/30"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    handleNavClick(item);
+                  }}
                 >
                   {t(item.key)}
-                </a>
+                </button>
               ))}
               <Button 
                 className="w-full mt-4 btn-shine text-white font-medium"
