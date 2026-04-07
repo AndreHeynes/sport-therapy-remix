@@ -40,13 +40,13 @@ const Header = () => {
 
           <nav className="hidden lg:flex items-center space-x-8">
             {navigationItems.map((item) => (
-              <a
+              <button
                 key={item.key}
-                href={item.href}
+                onClick={() => handleNavClick(item)}
                 className="text-brand-charcoal hover:text-brand-teal transition-all duration-300 font-medium hover:scale-105 glow-on-hover"
               >
                 {t(item.key)}
-              </a>
+              </button>
             ))}
           </nav>
 
