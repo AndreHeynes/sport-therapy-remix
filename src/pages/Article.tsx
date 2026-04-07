@@ -93,7 +93,7 @@ const Article = () => {
             </div>
             <h1 className="text-4xl font-heading font-bold text-brand-charcoal mb-8">{title}</h1>
             <Card className="shadow-lg">
-              <CardContent className="p-8 prose prose-gray max-w-none" dangerouslySetInnerHTML={{ __html: content }} />
+              <CardContent className="p-8 prose prose-gray max-w-none" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content, { ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'strong', 'em', 'br', 'img', 'blockquote', 'pre', 'code', 'span', 'div', 'table', 'thead', 'tbody', 'tr', 'th', 'td'], ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'target', 'rel', 'width', 'height'] }) }} />
             </Card>
           </div>
         </main>
