@@ -8,7 +8,20 @@ import logo from '@/assets/logo.png';
 const Header = () => {
   const { language, setLanguage, t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
+  const handleNavClick = (item: { href: string; isRoute?: boolean }) => {
+    if (item.isRoute) {
+      navigate(item.href);
+    } else {
+      const el = document.querySelector(item.href);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        navigate('/' + item.href);
+      }
+    }
+  };
   const navigationItems = [
     { key: 'nav.home', href: '#home' },
     { key: 'nav.about', href: '#about' },
