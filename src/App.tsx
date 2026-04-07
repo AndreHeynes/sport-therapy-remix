@@ -14,6 +14,7 @@ import MedicalDisclaimer from "./pages/MedicalDisclaimer";
 import CookiePolicy from "./pages/CookiePolicy";
 import Admin from "./pages/Admin";
 import About from "./pages/About";
+import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
+            <Route path="/blog" element={<Blog />} />
             <Route path="/article/:articleId" element={<Article />} />
             <Route path="/gdpr-compliance" element={<GDPRCompliance />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
@@ -7,12 +8,25 @@ import logo from '@/assets/logo.png';
 const Header = () => {
   const { language, setLanguage, t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
+  const handleNavClick = (item: { href: string; isRoute?: boolean }) => {
+    if (item.isRoute) {
+      navigate(item.href);
+    } else {
+      const el = document.querySelector(item.href);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        navigate('/' + item.href);
+      }
+    }
+  };
   const navigationItems = [
     { key: 'nav.home', href: '#home' },
     { key: 'nav.about', href: '#about' },
     { key: 'nav.services', href: '#services' },
-    { key: 'nav.resources', href: '#resources' },
+    { key: 'nav.resources', href: '/blog', isRoute: true },
     { key: 'nav.contact', href: '#contact' }
   ];
 
@@ -26,13 +40,13 @@ const Header = () => {
 
           <nav className="hidden lg:flex items-center space-x-8">
             {navigationItems.map((item) => (
-              <a
+              <button
                 key={item.key}
-                href={item.href}
+                onClick={() => handleNavClick(item)}
                 className="text-brand-charcoal hover:text-brand-teal transition-all duration-300 font-medium hover:scale-105 glow-on-hover"
               >
                 {t(item.key)}
-              </a>
+              </button>
             ))}
           </nav>
 
@@ -80,14 +94,16 @@ const Header = () => {
           <nav className="lg:hidden mt-4 pb-4 border-t border-white/20">
             <div className="pt-4 space-y-3 glass-card">
               {navigationItems.map((item) => (
-                <a
+                <button
                   key={item.key}
-                  href={item.href}
-                  className="block text-brand-charcoal hover:text-brand-teal transition-all duration-300 font-medium py-2 px-3 rounded-lg hover:bg-white/30"
-                  onClick={() => setIsMenuOpen(false)}
+                  className="block w-full text-left text-brand-charcoal hover:text-brand-teal transition-all duration-300 font-medium py-2 px-3 rounded-lg hover:bg-white/30"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    handleNavClick(item);
+                  }}
                 >
                   {t(item.key)}
-                </a>
+                </button>
               ))}
               <Button 
                 className="w-full mt-4 btn-shine text-white font-medium"
