@@ -8,6 +8,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, CalendarDays, Clock } from 'lucide-react';
+import DOMPurify from 'dompurify';
 import { useArticleBySlug } from '@/hooks/useArticles';
 import { format } from 'date-fns';
 import { sk } from 'date-fns/locale';
