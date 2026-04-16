@@ -1,54 +1,54 @@
 
+## What the screenshot confirms
 
-## Problem
+- The direct metadata URL is returning raw HTML source instead of behaving like a normal rendered HTML page.
+- The Slovak text is incorrectly encoded (`PreÄo...`), so there is a UTF-8/response-format issue in the metadata function path.
+- This is separate from the article page itself: `src/pages/Article.tsx` currently uses `article.image` only for SEO tags and never renders the image visibly on the page.
 
-Facebook's crawler does NOT execute JavaScript. It only reads the static `index.html`, which currently shows:
-- **og:title**: "Lovable App"
-- **og:description**: "Lovable Generated Project"
-- **og:image**: Lovable's default image
+## Updated plan
 
-React Helmet updates these client-side, but bots never see those updates.
+### 1. Fix the metadata function response
+Update `supabase/functions/og-metadata/index.ts` so it returns a proper UTF-8 HTML document that browsers and crawlers can parse reliably:
+- keep the OG/Twitter tags
+- strengthen the response headers for HTML + UTF-8
+- add a non-JS fallback redirect in addition to the current JS redirect
+- replace the bare text body with a tiny branded fallback page showing the article title, excerpt, and image
 
-## Solution: Two-part fix
+This will make the URL stop looking like “just code” when opened directly and remove the broken character rendering.
 
-### Part 1 — Fix `index.html` defaults (quick win)
+### 2. Fix image handling consistency
+Harden image URL logic so both of these work correctly:
+- relative paths like `/og-preco-boli.png`
+- full absolute URLs like `https://...`
 
-Update `index.html` with proper site-level OG tags so at minimum, non-article pages (homepage, blog listing) show correct branding:
+I’ll apply the same logic in:
+- `supabase/functions/og-metadata/index.ts`
+- `src/pages/Article.tsx`
+- `src/components/SEO.tsx` if needed for consistency
 
-```html
-<title>Šport & Body Terapia - Fyzioterapia Dubnica nad Váhom</title>
-<meta property="og:title" content="Šport & Body Terapia" />
-<meta property="og:description" content="Profesionálna fyzioterapia v Dubnici nad Váhom. André Heynes - 25+ rokov skúseností." />
-<meta property="og:image" content="https://sportandbodyterapia.org/og-default.png" />
-<meta property="og:url" content="https://sportandbodyterapia.org" />
-<meta property="og:site_name" content="Šport & Body Terapia" />
-```
+### 3. Show the article image on the real article page
+Update `src/pages/Article.tsx` to render the article’s image below the hero/title area so visitors see the same visual that social previews use.
+- keep current brand styling
+- keep bilingual behavior
+- include a safe fallback when no article image exists
 
-This alone won't fix article-specific previews (all articles would show the same generic card).
+### 4. Re-verify the Facebook flow after code fixes
+Once the function output is corrected:
+- test the direct metadata URL again to confirm it renders properly and redirects
+- re-scrape both domain variants in Facebook Debugger:
+  - `https://sportandbodyterapia.org/article/...`
+  - `https://www.sportandbodyterapia.org/article/...`
 
-### Part 2 — Edge Function for article-specific OG tags
+If Facebook still shows the generic image after that, the remaining issue will be Cloudflare routing/cache rather than the app code.
 
-Create a backend function (`og-metadata`) that:
-1. Receives an article slug
-2. Fetches the article from the database
-3. Returns a minimal HTML page with the correct `og:title`, `og:description`, `og:image`, and `og:url` tags
-4. Includes a JavaScript redirect so real users are instantly sent to the SPA
+## Files to update
 
-Then configure **Cloudflare** (which you already use) to detect bot user agents (`facebookexternalhit`, `Twitterbot`) on `/article/*` routes and proxy those requests to the edge function. This way:
-- **Bots** get a static HTML page with perfect OG tags
-- **Humans** get the normal SPA experience
+- `supabase/functions/og-metadata/index.ts`
+- `src/pages/Article.tsx`
+- `src/components/SEO.tsx` (only if needed to align image URL resolution)
 
-### Files affected
+## Technical details
 
-| File | Action |
-|------|--------|
-| `index.html` | Update default OG meta tags with real branding |
-| `supabase/functions/og-metadata/index.ts` | Create — edge function that returns HTML with article OG tags |
-| Cloudflare Worker (manual) | I'll provide the worker script — you'll paste it in Cloudflare dashboard |
-
-### What you'll need to do manually
-After implementation, you'll need to add a **Cloudflare Worker** route for `sportandbodyterapia.org/article/*` that proxies bot requests to the edge function. I'll give you the exact script and setup steps.
-
-### After deployment
-Re-scrape all article URLs in Facebook's Sharing Debugger to see the corrected previews.
-
+- The screenshot strongly suggests the metadata response is not being interpreted as clean HTML somewhere in the delivery chain.
+- The mojibake confirms encoding is not clean, even though the function code intends UTF-8.
+- The missing on-page article image is a separate UI gap: the page computes `ogImage` but never renders an `<img>` for readers.
