@@ -130,20 +130,25 @@ const Admin = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-muted flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-2xl text-center font-heading">Admin Login</CardTitle>
+            <CardTitle className="text-2xl text-center font-heading">
+              {isSignup ? 'Create Admin Account' : 'Admin Login'}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
               <Input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
               <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
               <Button type="submit" disabled={loginLoading} className="w-full bg-brand-teal hover:bg-brand-teal-dark">
-                {loginLoading ? 'Signing in...' : 'Sign In'}
+                {loginLoading ? (isSignup ? 'Creating account...' : 'Signing in...') : (isSignup ? 'Create Account' : 'Sign In')}
               </Button>
             </form>
-            <Button variant="ghost" onClick={() => navigate('/')} className="w-full mt-4">
+            <Button variant="link" onClick={() => setIsSignup(!isSignup)} className="w-full mt-2">
+              {isSignup ? 'Already have an account? Sign in' : 'Need an account? Sign up'}
+            </Button>
+            <Button variant="ghost" onClick={() => navigate('/')} className="w-full mt-2">
               <ArrowLeft className="mr-2" size={16} />
               {language === 'sk' ? 'Späť na stránku' : 'Back to site'}
             </Button>
