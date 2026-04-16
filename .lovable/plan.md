@@ -1,41 +1,54 @@
 
 
-## Plan: Fix Facebook OG Warnings + Generate OG Images for All Blogs
+## Problem
 
-### Facebook warnings explained
+Facebook's crawler does NOT execute JavaScript. It only reads the static `index.html`, which currently shows:
+- **og:title**: "Lovable App"
+- **og:description**: "Lovable Generated Project"
+- **og:image**: Lovable's default image
 
-1. **`og:url` missing** — The SEO component already outputs `og:url` (line 44), but it relies on the `canonical` prop being passed. If `canonical` isn't set, it falls back to the site root. This is likely a Facebook caching issue from before the fix, but I'll make it more robust by always outputting `og:url` based on the current path.
+React Helmet updates these client-side, but bots never see those updates.
 
-2. **`fb:app_id` missing** — Facebook recommends this but it's **not required** for preview cards to work. It enables Facebook Insights for your domain. You'd need to create a Facebook App at developers.facebook.com to get one. I can add the meta tag if you provide an app ID, but **the preview card will work without it**.
+## Solution: Two-part fix
 
-### What I'll do
+### Part 1 — Fix `index.html` defaults (quick win)
 
-1. **Fix `og:url`** in `SEO.tsx` — always output a proper `og:url` even when `canonical` isn't explicitly passed (use `window.location` as fallback)
+Update `index.html` with proper site-level OG tags so at minimum, non-article pages (homepage, blog listing) show correct branding:
 
-2. **Generate 4 OG images** (1200×630px, teal branded) for the remaining blogs:
-   - `/og-understanding-sciatica.png` — Sciatica article
-   - `/og-exercises-lower-back.png` — Lower back exercises
-   - `/og-headache-management.png` — Headache management
-   - `/og-sports-injury-prevention.png` — Sports injury prevention
+```html
+<title>Šport & Body Terapia - Fyzioterapia Dubnica nad Váhom</title>
+<meta property="og:title" content="Šport & Body Terapia" />
+<meta property="og:description" content="Profesionálna fyzioterapia v Dubnici nad Váhom. André Heynes - 25+ rokov skúseností." />
+<meta property="og:image" content="https://sportandbodyterapia.org/og-default.png" />
+<meta property="og:url" content="https://sportandbodyterapia.org" />
+<meta property="og:site_name" content="Šport & Body Terapia" />
+```
 
-3. **Update all 4 articles** in the database to point to their new OG images
+This alone won't fix article-specific previews (all articles would show the same generic card).
 
-4. **Fix Article.tsx `ogImage` logic** — currently the emoji check (`article.image !== '📝'`) won't catch all emoji values (🦴, 🏋️, 🧠, 🏃). I'll update the logic to check if the image starts with `/` (a real path) rather than checking against specific emojis.
+### Part 2 — Edge Function for article-specific OG tags
 
-### About `fb:app_id`
-This is optional. If you want Facebook Insights tracking, you'll need to create a Facebook App at developers.facebook.com and give me the App ID. The preview cards will work fine without it.
+Create a backend function (`og-metadata`) that:
+1. Receives an article slug
+2. Fetches the article from the database
+3. Returns a minimal HTML page with the correct `og:title`, `og:description`, `og:image`, and `og:url` tags
+4. Includes a JavaScript redirect so real users are instantly sent to the SPA
+
+Then configure **Cloudflare** (which you already use) to detect bot user agents (`facebookexternalhit`, `Twitterbot`) on `/article/*` routes and proxy those requests to the edge function. This way:
+- **Bots** get a static HTML page with perfect OG tags
+- **Humans** get the normal SPA experience
 
 ### Files affected
+
 | File | Action |
 |------|--------|
-| `src/components/SEO.tsx` | Fix `og:url` fallback |
-| `src/pages/Article.tsx` | Fix image detection logic |
-| `public/og-understanding-sciatica.png` | Create |
-| `public/og-exercises-lower-back.png` | Create |
-| `public/og-headache-management.png` | Create |
-| `public/og-sports-injury-prevention.png` | Create |
-| Database: `articles` table | Update `image` field for 4 articles |
+| `index.html` | Update default OG meta tags with real branding |
+| `supabase/functions/og-metadata/index.ts` | Create — edge function that returns HTML with article OG tags |
+| Cloudflare Worker (manual) | I'll provide the worker script — you'll paste it in Cloudflare dashboard |
+
+### What you'll need to do manually
+After implementation, you'll need to add a **Cloudflare Worker** route for `sportandbodyterapia.org/article/*` that proxies bot requests to the edge function. I'll give you the exact script and setup steps.
 
 ### After deployment
-Re-scrape all article URLs in Facebook's [Sharing Debugger](https://developers.facebook.com/tools/debug/) to refresh the cached previews.
+Re-scrape all article URLs in Facebook's Sharing Debugger to see the corrected previews.
 
