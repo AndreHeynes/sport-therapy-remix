@@ -1,54 +1,83 @@
 
-## What the screenshot confirms
 
-- The direct metadata URL is returning raw HTML source instead of behaving like a normal rendered HTML page.
-- The Slovak text is incorrectly encoded (`PreÄo...`), so there is a UTF-8/response-format issue in the metadata function path.
-- This is separate from the article page itself: `src/pages/Article.tsx` currently uses `article.image` only for SEO tags and never renders the image visibly on the page.
+## Two Problems Found
 
-## Updated plan
+### Problem 1: Edge function returns `Content-Type: text/plain`
+The Supabase Edge Runtime is **overriding** the `Content-Type` header to `text/plain`, even though the code sets `text/html; charset=utf-8`. This is why the metadata URL shows raw code instead of a rendered page. Facebook's crawler may still parse the OG tags from plain text, but it's unreliable.
 
-### 1. Fix the metadata function response
-Update `supabase/functions/og-metadata/index.ts` so it returns a proper UTF-8 HTML document that browsers and crawlers can parse reliably:
-- keep the OG/Twitter tags
-- strengthen the response headers for HTML + UTF-8
-- add a non-JS fallback redirect in addition to the current JS redirect
-- replace the bare text body with a tiny branded fallback page showing the article title, excerpt, and image
+**Fix**: Change how the Response headers are constructed. Instead of `new Headers({...})`, use the simpler object form which the Edge Runtime respects:
+```typescript
+return new Response(html, {
+  headers: {
+    "content-type": "text/html; charset=utf-8",
+    "cache-control": "public, max-age=300",
+  },
+});
+```
 
-This will make the URL stop looking like “just code” when opened directly and remove the broken character rendering.
+### Problem 2: Article images don't show in preview
+All article images in the database use relative paths (e.g., `/og-preco-boli.png`). These files exist on `sportandbodyterapia.org` but **not** on the Lovable preview domain. The `<img>` tag renders but the image 404s.
 
-### 2. Fix image handling consistency
-Harden image URL logic so both of these work correctly:
-- relative paths like `/og-preco-boli.png`
-- full absolute URLs like `https://...`
+**Fix**: In `Article.tsx`, resolve relative image paths to the full `sportandbodyterapia.org` URL so they display everywhere:
+```tsx
+const displayImage = article.image?.startsWith('http')
+  ? article.image
+  : `https://sportandbodyterapia.org${article.image}`;
+```
 
-I’ll apply the same logic in:
-- `supabase/functions/og-metadata/index.ts`
-- `src/pages/Article.tsx`
-- `src/components/SEO.tsx` if needed for consistency
+### Cloudflare Worker — Step-by-step guide
 
-### 3. Show the article image on the real article page
-Update `src/pages/Article.tsx` to render the article’s image below the hero/title area so visitors see the same visual that social previews use.
-- keep current brand styling
-- keep bilingual behavior
-- include a safe fallback when no article image exists
+Your Cloudflare Worker needs to intercept `/article/*` requests from social bots and proxy them to the edge function. Here's exactly where to add the code:
 
-### 4. Re-verify the Facebook flow after code fixes
-Once the function output is corrected:
-- test the direct metadata URL again to confirm it renders properly and redirects
-- re-scrape both domain variants in Facebook Debugger:
-  - `https://sportandbodyterapia.org/article/...`
-  - `https://www.sportandbodyterapia.org/article/...`
+1. Go to **Cloudflare Dashboard** → **Workers & Pages** → click your `og-bot-proxy` worker
+2. Click **"Edit Code"** (top right, or "Quick Edit")
+3. Replace ALL the code in the editor with this:
 
-If Facebook still shows the generic image after that, the remaining issue will be Cloudflare routing/cache rather than the app code.
+```javascript
+const BOT_UA = /facebookexternalhit|Facebot|Twitterbot|LinkedInBot|WhatsApp|Slackbot|TelegramBot|Pinterest|Discordbot/i;
+const EDGE_FN = "https://tlodzjsmaxkugmzhzdze.supabase.co/functions/v1/og-metadata";
 
-## Files to update
+export default {
+  async fetch(request) {
+    const ua = request.headers.get("user-agent") || "";
+    const url = new URL(request.url);
 
-- `supabase/functions/og-metadata/index.ts`
-- `src/pages/Article.tsx`
-- `src/components/SEO.tsx` (only if needed to align image URL resolution)
+    // Only intercept bot requests to /article/* paths
+    const match = url.pathname.match(/^\/article\/([^/?#]+)/);
+    if (!match || !BOT_UA.test(ua)) {
+      return fetch(request); // Pass through to origin
+    }
 
-## Technical details
+    const slug = match[1];
+    const edgeUrl = `${EDGE_FN}?slug=${encodeURIComponent(slug)}`;
+    const resp = await fetch(edgeUrl);
+    
+    // Force correct Content-Type (fixes the text/plain issue)
+    return new Response(resp.body, {
+      status: resp.status,
+      headers: {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=300",
+      },
+    });
+  },
+};
+```
 
-- The screenshot strongly suggests the metadata response is not being interpreted as clean HTML somewhere in the delivery chain.
-- The mojibake confirms encoding is not clean, even though the function code intends UTF-8.
-- The missing on-page article image is a separate UI gap: the page computes `ogImage` but never renders an `<img>` for readers.
+4. Click **"Deploy"**
+5. Then go to **Settings → Triggers → Routes** and ensure BOTH routes exist:
+   - `sportandbodyterapia.org/article/*` → Zone: `sportandbodyterapia.org`
+   - `www.sportandbodyterapia.org/article/*` → Zone: `sportandbodyterapia.org`
+
+### Files to update
+
+| File | Change |
+|------|--------|
+| `supabase/functions/og-metadata/index.ts` | Fix headers to use plain object instead of `new Headers()` |
+| `src/pages/Article.tsx` | Resolve relative image paths to absolute URLs |
+
+### After deployment
+1. Visit the edge function URL directly — it should now render as HTML, not raw code
+2. Re-scrape in Facebook Debugger — the Worker will serve the correct OG tags to Facebook's bot
+3. Article pages will show images on all domains including preview
+
