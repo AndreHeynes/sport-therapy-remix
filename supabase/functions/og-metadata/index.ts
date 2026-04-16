@@ -4,6 +4,12 @@ const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
 const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const siteUrl = "https://sportandbodyterapia.org";
 
+function resolveImage(image: string | null | undefined): string {
+  if (!image) return `${siteUrl}/og-default.png`;
+  if (image.startsWith("http")) return image;
+  return `${siteUrl}${image.startsWith("/") ? "" : "/"}${image}`;
+}
+
 Deno.serve(async (req) => {
   const url = new URL(req.url);
   const slug = url.searchParams.get("slug");
@@ -22,7 +28,6 @@ Deno.serve(async (req) => {
     .single();
 
   if (error || !article) {
-    // Fallback to site defaults
     return new Response(buildHtml({
       title: "Šport & Body Terapia - Fyzioterapia Dubnica nad Váhom",
       description: "Profesionálna fyzioterapia v Dubnici nad Váhom. André Heynes - 25+ rokov skúseností.",
@@ -30,14 +35,14 @@ Deno.serve(async (req) => {
       url: siteUrl,
       redirectUrl: siteUrl,
     }), {
-      headers: { "Content-Type": "text/html; charset=utf-8" },
+      headers: {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=300",
+      },
     });
   }
 
-  const ogImage = article.image && article.image.startsWith("/")
-    ? `${siteUrl}${article.image}`
-    : `${siteUrl}/og-default.png`;
-
+  const ogImage = resolveImage(article.image);
   const articleUrl = `${siteUrl}/article/${article.slug}`;
 
   return new Response(buildHtml({
@@ -47,7 +52,10 @@ Deno.serve(async (req) => {
     url: articleUrl,
     redirectUrl: articleUrl,
   }), {
-    headers: { "Content-Type": "text/html; charset=utf-8" },
+    headers: {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": "public, max-age=300",
+    },
   });
 });
 
@@ -65,6 +73,7 @@ function buildHtml(meta: {
 <html lang="sk">
 <head>
   <meta charset="utf-8" />
+  <meta http-equiv="refresh" content="0;url=${esc(meta.redirectUrl)}" />
   <title>${esc(meta.title)}</title>
   <meta name="description" content="${esc(meta.description)}" />
   <meta property="og:type" content="article" />
@@ -79,10 +88,26 @@ function buildHtml(meta: {
   <meta name="twitter:title" content="${esc(meta.title)}" />
   <meta name="twitter:description" content="${esc(meta.description)}" />
   <meta name="twitter:image" content="${esc(meta.image)}" />
+  <style>
+    body { font-family: 'Open Sans', sans-serif; background: #f8fafb; color: #2d3748; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 1rem; }
+    .card { max-width: 600px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+    .card img { width: 100%; height: auto; display: block; }
+    .card .body { padding: 1.5rem; }
+    .card h1 { font-size: 1.25rem; margin: 0 0 .5rem; }
+    .card p { font-size: .9rem; color: #666; margin: 0 0 1rem; }
+    .card a { color: #0d9488; text-decoration: none; font-weight: 600; }
+  </style>
   <script>window.location.replace("${esc(meta.redirectUrl)}");</script>
 </head>
 <body>
-  <p>Redirecting to <a href="${esc(meta.redirectUrl)}">${esc(meta.title)}</a>...</p>
+  <div class="card">
+    <img src="${esc(meta.image)}" alt="${esc(meta.title)}" />
+    <div class="body">
+      <h1>${esc(meta.title)}</h1>
+      <p>${esc(meta.description)}</p>
+      <a href="${esc(meta.redirectUrl)}">Pokračovať na článok &rarr;</a>
+    </div>
+  </div>
 </body>
 </html>`;
 }

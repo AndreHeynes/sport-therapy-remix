@@ -101,9 +101,12 @@ const Article = () => {
   const excerpt = language === 'sk' ? article.excerpt_sk : article.excerpt_en;
   const category = language === 'sk' ? article.category_sk : article.category_en;
   const readTime = language === 'sk' ? article.read_time_sk : article.read_time_en;
-  const articleUrl = `https://sportandbodyterapia.org/article/${article.slug}`;
-  const ogImage = article.image && article.image.startsWith('/')
-    ? `https://sportandbodyterapia.org${article.image}`
+  const siteUrl = 'https://sportandbodyterapia.org';
+  const articleUrl = `${siteUrl}/article/${article.slug}`;
+  const resolvedImage = article.image
+    ? article.image.startsWith('http')
+      ? article.image
+      : `${siteUrl}${article.image.startsWith('/') ? '' : '/'}${article.image}`
     : undefined;
 
   return (
