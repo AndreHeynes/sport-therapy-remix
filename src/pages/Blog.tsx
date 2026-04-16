@@ -46,44 +46,59 @@ const Blog = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {articles.map((article) => (
-                <Card
-                  key={article.id}
-                  className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-0 shadow-md overflow-hidden cursor-pointer"
-                  onClick={() => navigate(`/article/${article.slug}`)}
-                >
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-4xl group-hover:scale-110 transition-transform duration-300">
-                        {article.image}
-                      </span>
-                      <span className="text-xs font-semibold text-brand-teal bg-brand-teal/10 px-3 py-1 rounded-full">
-                        {language === 'sk' ? article.category_sk : article.category_en}
-                      </span>
-                    </div>
-                    <CardTitle className="text-lg font-heading font-semibold text-brand-charcoal group-hover:text-brand-teal transition-colors duration-300">
-                      {language === 'sk' ? article.title_sk : article.title_en}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-muted-foreground leading-relaxed mb-4 line-clamp-3">
-                      {language === 'sk' ? article.excerpt_sk : article.excerpt_en}
-                    </p>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <CalendarDays size={14} />
-                        {format(new Date(article.created_at), 'd MMM yyyy', {
-                          locale: language === 'sk' ? sk : undefined,
-                        })}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock size={14} />
-                        {language === 'sk' ? article.read_time_sk : article.read_time_en}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+              {articles.map((article) => {
+                const imageUrl = article.image
+                  ? article.image.startsWith('http')
+                    ? article.image
+                    : `https://sportandbodyterapia.org${article.image.startsWith('/') ? '' : '/'}${article.image}`
+                  : null;
+
+                return (
+                  <Card
+                    key={article.id}
+                    className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-0 shadow-md overflow-hidden cursor-pointer"
+                    onClick={() => navigate(`/article/${article.slug}`)}
+                  >
+                    {imageUrl && (
+                      <div className="aspect-video overflow-hidden">
+                        <img
+                          src={imageUrl}
+                          alt={language === 'sk' ? article.title_sk : article.title_en}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center justify-end mb-2">
+                        <span className="text-xs font-semibold text-brand-teal bg-brand-teal/10 px-3 py-1 rounded-full">
+                          {language === 'sk' ? article.category_sk : article.category_en}
+                        </span>
+                      </div>
+                      <CardTitle className="text-lg font-heading font-semibold text-brand-charcoal group-hover:text-brand-teal transition-colors duration-300">
+                        {language === 'sk' ? article.title_sk : article.title_en}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <p className="text-muted-foreground leading-relaxed mb-4 line-clamp-3">
+                        {language === 'sk' ? article.excerpt_sk : article.excerpt_en}
+                      </p>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <CalendarDays size={14} />
+                          {format(new Date(article.created_at), 'd MMM yyyy', {
+                            locale: language === 'sk' ? sk : undefined,
+                          })}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock size={14} />
+                          {language === 'sk' ? article.read_time_sk : article.read_time_en}
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           )}
         </main>
