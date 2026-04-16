@@ -176,6 +176,18 @@ const Article = () => {
 
         <main className="container mx-auto px-4 py-10">
           <div className="max-w-3xl mx-auto">
+            {/* Hero image */}
+            {article.image && (
+              <div className="mb-10 rounded-xl overflow-hidden shadow-lg">
+                <img
+                  src={article.image}
+                  alt={title}
+                  className="w-full h-auto object-cover"
+                  loading="eager"
+                />
+              </div>
+            )}
+          <div className="max-w-3xl mx-auto">
             {/* Excerpt highlight */}
             <div className="border-l-4 border-brand-teal bg-brand-teal/5 rounded-r-lg p-5 mb-10">
               <p className="text-brand-charcoal/80 text-lg leading-relaxed italic font-body">
