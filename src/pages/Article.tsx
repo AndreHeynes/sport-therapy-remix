@@ -102,8 +102,8 @@ const Article = () => {
   const category = language === 'sk' ? article.category_sk : article.category_en;
   const readTime = language === 'sk' ? article.read_time_sk : article.read_time_en;
   const articleUrl = `https://sportandbodyterapia.org/article/${article.slug}`;
-  const ogImage = article.image && article.image !== '📝'
-    ? `https://sportandbodyterapia.org${article.image.startsWith('/') ? '' : '/'}${article.image}`
+  const ogImage = article.image && article.image.startsWith('/')
+    ? `https://sportandbodyterapia.org${article.image}`
     : undefined;
 
   return (
