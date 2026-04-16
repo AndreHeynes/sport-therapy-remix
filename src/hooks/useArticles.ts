@@ -51,7 +51,7 @@ export const useArticleBySlug = (slug: string | undefined) => {
   });
 };
 
-export const useAllArticles = () => {
+export const useAllArticles = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: ['articles', 'all'],
     queryFn: async () => {
@@ -62,5 +62,6 @@ export const useAllArticles = () => {
       if (error) throw error;
       return data as Article[];
     },
+    enabled: options?.enabled ?? true,
   });
 };
