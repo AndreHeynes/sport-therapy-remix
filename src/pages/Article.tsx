@@ -117,7 +117,7 @@ const Article = () => {
           description={excerpt}
           canonical={articleUrl}
           type="article"
-          ogImage={ogImage}
+          ogImage={resolvedImage}
         />
 
         {/* Reading progress bar */}
