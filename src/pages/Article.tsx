@@ -102,6 +102,9 @@ const Article = () => {
   const category = language === 'sk' ? article.category_sk : article.category_en;
   const readTime = language === 'sk' ? article.read_time_sk : article.read_time_en;
   const articleUrl = `https://sportandbodyterapia.org/article/${article.slug}`;
+  const ogImage = article.image && article.image !== '📝'
+    ? `https://sportandbodyterapia.org${article.image.startsWith('/') ? '' : '/'}${article.image}`
+    : undefined;
 
   return (
     <HelmetProvider>
@@ -111,6 +114,7 @@ const Article = () => {
           description={excerpt}
           canonical={articleUrl}
           type="article"
+          ogImage={ogImage}
         />
 
         {/* Reading progress bar */}
