@@ -101,9 +101,12 @@ const Article = () => {
   const excerpt = language === 'sk' ? article.excerpt_sk : article.excerpt_en;
   const category = language === 'sk' ? article.category_sk : article.category_en;
   const readTime = language === 'sk' ? article.read_time_sk : article.read_time_en;
-  const articleUrl = `https://sportandbodyterapia.org/article/${article.slug}`;
-  const ogImage = article.image && article.image.startsWith('/')
-    ? `https://sportandbodyterapia.org${article.image}`
+  const siteUrl = 'https://sportandbodyterapia.org';
+  const articleUrl = `${siteUrl}/article/${article.slug}`;
+  const resolvedImage = article.image
+    ? article.image.startsWith('http')
+      ? article.image
+      : `${siteUrl}${article.image.startsWith('/') ? '' : '/'}${article.image}`
     : undefined;
 
   return (
@@ -114,7 +117,7 @@ const Article = () => {
           description={excerpt}
           canonical={articleUrl}
           type="article"
-          ogImage={ogImage}
+          ogImage={resolvedImage}
         />
 
         {/* Reading progress bar */}
@@ -173,6 +176,17 @@ const Article = () => {
 
         <main className="container mx-auto px-4 py-10">
           <div className="max-w-3xl mx-auto">
+            {/* Hero image */}
+            {article.image && (
+              <div className="mb-10 rounded-xl overflow-hidden shadow-lg">
+                <img
+                  src={article.image}
+                  alt={title}
+                  className="w-full h-auto object-cover"
+                  loading="eager"
+                />
+              </div>
+            )}
             {/* Excerpt highlight */}
             <div className="border-l-4 border-brand-teal bg-brand-teal/5 rounded-r-lg p-5 mb-10">
               <p className="text-brand-charcoal/80 text-lg leading-relaxed italic font-body">
