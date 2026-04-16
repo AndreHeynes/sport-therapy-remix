@@ -1,83 +1,53 @@
 
+## What I found
 
-## Two Problems Found
+1. The missing blog images on `www.sportandbodyterapia.org/blog` are a separate frontend bug.
+   - `src/pages/Blog.tsx` currently renders `{article.image}` as plain text, so the card shows `/og-preco-boli.png` instead of an image.
+   - `src/components/PatientResourcesSection.tsx` has the same bug for the homepage article cards.
 
-### Problem 1: Edge function returns `Content-Type: text/plain`
-The Supabase Edge Runtime is **overriding** the `Content-Type` header to `text/plain`, even though the code sets `text/html; charset=utf-8`. This is why the metadata URL shows raw code instead of a rendered page. Facebook's crawler may still parse the OG tags from plain text, but it's unreliable.
+2. The Facebook Debugger issue is still a Cloudflare routing issue, not the article data.
+   - `index.html` still contains only the default site-wide OG tags.
+   - That means if the Worker does not intercept the request, Facebook will keep seeing the generic default preview.
+   - Your project memory says the `@` and `www` DNS records are set to **DNS only**. Cloudflare Worker routes require the hostname to be **proxied** for the Worker to run.
 
-**Fix**: Change how the Response headers are constructed. Instead of `new Headers({...})`, use the simpler object form which the Edge Runtime respects:
-```typescript
-return new Response(html, {
-  headers: {
-    "content-type": "text/html; charset=utf-8",
-    "cache-control": "public, max-age=300",
-  },
-});
-```
+## Plan
 
-### Problem 2: Article images don't show in preview
-All article images in the database use relative paths (e.g., `/og-preco-boli.png`). These files exist on `sportandbodyterapia.org` but **not** on the Lovable preview domain. The `<img>` tag renders but the image 404s.
+### 1. Fix blog card images in the app
+Update both article-card UIs to render real images instead of text:
+- `src/pages/Blog.tsx`
+- `src/components/PatientResourcesSection.tsx`
 
-**Fix**: In `Article.tsx`, resolve relative image paths to the full `sportandbodyterapia.org` URL so they display everywhere:
-```tsx
-const displayImage = article.image?.startsWith('http')
-  ? article.image
-  : `https://sportandbodyterapia.org${article.image}`;
-```
+Implementation:
+- resolve relative image paths to absolute URLs
+- render a proper `<img>` block at the top of each card
+- keep a safe fallback if an article has no image
 
-### Cloudflare Worker — Step-by-step guide
+### 2. Keep article page image handling aligned
+Review the current article image logic in `src/pages/Article.tsx` and reuse the same image-resolution pattern in the blog cards so all article views behave consistently.
 
-Your Cloudflare Worker needs to intercept `/article/*` requests from social bots and proxy them to the edge function. Here's exactly where to add the code:
+### 3. Fix Cloudflare so the Worker can actually run
+In Cloudflare:
+- switch both DNS records for `sportandbodyterapia.org` and `www.sportandbodyterapia.org` from **DNS only** to **Proxied**
+- keep both Worker routes:
+  - `sportandbodyterapia.org/article/*`
+  - `www.sportandbodyterapia.org/article/*`
 
-1. Go to **Cloudflare Dashboard** → **Workers & Pages** → click your `og-bot-proxy` worker
-2. Click **"Edit Code"** (top right, or "Quick Edit")
-3. Replace ALL the code in the editor with this:
+Without proxied DNS, the Worker route will not intercept article requests.
 
-```javascript
-const BOT_UA = /facebookexternalhit|Facebot|Twitterbot|LinkedInBot|WhatsApp|Slackbot|TelegramBot|Pinterest|Discordbot/i;
-const EDGE_FN = "https://tlodzjsmaxkugmzhzdze.supabase.co/functions/v1/og-metadata";
+### 4. Make Worker verification easier
+Temporarily adjust the Worker so it handles **all** `/article/*` requests during testing, not just bot user agents.
+That will let us confirm immediately in a browser whether the Worker is serving the metadata HTML. Once confirmed, we can restore the bot-only condition if desired.
 
-export default {
-  async fetch(request) {
-    const ua = request.headers.get("user-agent") || "";
-    const url = new URL(request.url);
+### 5. Re-test the OG flow
+After the app changes are published and Cloudflare is corrected:
+- verify `/blog` now shows image thumbnails instead of file paths
+- open one article URL directly and confirm the Worker response is being served during testing
+- re-run Facebook Debugger on both:
+  - `https://sportandbodyterapia.org/article/preco-boli-pochopenie-bolesti`
+  - `https://www.sportandbodyterapia.org/article/preco-boli-pochopenie-bolesti`
 
-    // Only intercept bot requests to /article/* paths
-    const match = url.pathname.match(/^\/article\/([^/?#]+)/);
-    if (!match || !BOT_UA.test(ua)) {
-      return fetch(request); // Pass through to origin
-    }
+## Technical notes
 
-    const slug = match[1];
-    const edgeUrl = `${EDGE_FN}?slug=${encodeURIComponent(slug)}`;
-    const resp = await fetch(edgeUrl);
-    
-    // Force correct Content-Type (fixes the text/plain issue)
-    return new Response(resp.body, {
-      status: resp.status,
-      headers: {
-        "content-type": "text/html; charset=utf-8",
-        "cache-control": "public, max-age=300",
-      },
-    });
-  },
-};
-```
-
-4. Click **"Deploy"**
-5. Then go to **Settings → Triggers → Routes** and ensure BOTH routes exist:
-   - `sportandbodyterapia.org/article/*` → Zone: `sportandbodyterapia.org`
-   - `www.sportandbodyterapia.org/article/*` → Zone: `sportandbodyterapia.org`
-
-### Files to update
-
-| File | Change |
-|------|--------|
-| `supabase/functions/og-metadata/index.ts` | Fix headers to use plain object instead of `new Headers()` |
-| `src/pages/Article.tsx` | Resolve relative image paths to absolute URLs |
-
-### After deployment
-1. Visit the edge function URL directly — it should now render as HTML, not raw code
-2. Re-scrape in Facebook Debugger — the Worker will serve the correct OG tags to Facebook's bot
-3. Article pages will show images on all domains including preview
-
+- The on-site blog image issue is definitely in code.
+- The unchanged Facebook preview is most likely because Cloudflare is still serving the normal app page, so Facebook falls back to the default OG tags from `index.html`.
+- No database change is needed for this fix.
