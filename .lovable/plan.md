@@ -1,24 +1,42 @@
 
 
-## Plan: Add Blog Article Directly to Database
+## Plan: Redesign Article Layout + Social Sharing (Facebook & Instagram only)
 
-Since you're having difficulty with the admin interface, I'll insert the blog article directly into the database for you.
+### Files to create/edit
 
-### What I'll do
+**1. Create `src/components/ArticleShareButtons.tsx`**
+- Facebook share button (URL-based: `facebook.com/sharer/sharer.php?u=...`)
+- Instagram note: Instagram doesn't support URL sharing — show a "Copy Link" button with a tooltip saying "Paste on Instagram"
+- Copy Link button with clipboard feedback toast
+- Bilingual labels (SK/EN)
+- Styled with brand teal colors, horizontal layout at bottom of article
 
-1. **Insert the article** into the `articles` table with all the Slovak and English content you provided, using a SQL migration
-2. Set it as **published** so it appears immediately on the blog page
-3. Use the slug `preco-boli-pochopenie-bolesti` / URL: `sportandbodyterapia.org/article/preco-boli-pochopenie-bolesti`
+**2. Rewrite `src/pages/Article.tsx`**
+- **Hero banner**: Teal gradient background with category badge, date, read time, and series indicator (e.g., "Blog 1 z 5" / "Blog 1 of 5")
+- **Reading progress bar**: Fixed at top of viewport, tracks scroll position using the existing `Progress` component
+- **Excerpt highlight box**: Styled intro paragraph below hero with left teal border
+- **Table of Contents**: Auto-generated from `<h2>` tags in the HTML content, collapsible on mobile
+- **Clean content area**: Remove Card wrapper, use `article-prose` styling with generous spacing
+- **Share buttons**: `ArticleShareButtons` component at bottom
+- **Bottom CTA**: "Book an appointment" button linking to contact section, plus "Back to Blog"
+- Keep existing loading/error states
 
-### Article details
-- **Slug**: `preco-boli-pochopenie-bolesti`
-- **Category SK/EN**: Vzdelávanie o bolesti / Pain Education
-- **Read time SK/EN**: 10 min čítania / 10 min read
-- **Image**: 🧠
-- **Published**: Yes
-- **Content**: Full HTML-formatted version of both Slovak and English texts you provided
+**3. Edit `src/components/SEO.tsx`**
+- Add `og:image` meta tag (use `ogImage` prop or default fallback)
+- Add Twitter Card meta tags for completeness (`twitter:card`, `twitter:title`, `twitter:description`)
 
-### Technical notes
-- The content will be wrapped in proper HTML tags (`<p>`, `<h2>`, `<h3>`, `<blockquote>`, `<ul>`, `<li>`, `<strong>`) for clean rendering
-- Single database insert via migration tool — no code changes needed
+**4. Edit `src/index.css`**
+- Add `.article-prose` class with:
+  - Teal-colored `h2`/`h3` headings with subtle bottom border
+  - Increased paragraph spacing and line height
+  - Styled blockquotes with left teal border
+  - Teal bullet markers on lists
+  - Better `strong` tag visibility
+
+**5. Install `@tailwindcss/typography` + update `tailwind.config.ts`**
+- Add plugin for base prose defaults
+- Configure prose color overrides in the plugin config
+
+### No database changes needed
+All articles share the same `Article.tsx` template — existing and future articles automatically get the new layout.
 
