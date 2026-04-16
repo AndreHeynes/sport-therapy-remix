@@ -1,42 +1,33 @@
 
 
-## Plan: Redesign Article Layout + Social Sharing (Facebook & Instagram only)
+## Plan: Generate OG Image for Facebook Previews
 
-### Files to create/edit
+### Problem
+Facebook isn't showing a nice preview card when sharing the blog URL because there's no actual `og-default.png` image file — the SEO component references it but the file doesn't exist.
 
-**1. Create `src/components/ArticleShareButtons.tsx`**
-- Facebook share button (URL-based: `facebook.com/sharer/sharer.php?u=...`)
-- Instagram note: Instagram doesn't support URL sharing — show a "Copy Link" button with a tooltip saying "Paste on Instagram"
-- Copy Link button with clipboard feedback toast
-- Bilingual labels (SK/EN)
-- Styled with brand teal colors, horizontal layout at bottom of article
+### What I'll do
 
-**2. Rewrite `src/pages/Article.tsx`**
-- **Hero banner**: Teal gradient background with category badge, date, read time, and series indicator (e.g., "Blog 1 z 5" / "Blog 1 of 5")
-- **Reading progress bar**: Fixed at top of viewport, tracks scroll position using the existing `Progress` component
-- **Excerpt highlight box**: Styled intro paragraph below hero with left teal border
-- **Table of Contents**: Auto-generated from `<h2>` tags in the HTML content, collapsible on mobile
-- **Clean content area**: Remove Card wrapper, use `article-prose` styling with generous spacing
-- **Share buttons**: `ArticleShareButtons` component at bottom
-- **Bottom CTA**: "Book an appointment" button linking to contact section, plus "Back to Blog"
-- Keep existing loading/error states
+1. **Generate a branded OG image** (1200×630px, the Facebook-recommended size) using AI image generation
+   - Teal gradient background matching the brand
+   - "Šport & Body Terapia" branding
+   - Clean, professional design with the site name and tagline
+   - Save as `public/og-default.png`
 
-**3. Edit `src/components/SEO.tsx`**
-- Add `og:image` meta tag (use `ogImage` prop or default fallback)
-- Add Twitter Card meta tags for completeness (`twitter:card`, `twitter:title`, `twitter:description`)
+2. **Generate an article-specific OG image** for the pain blog post
+   - Same brand style but with the article title
+   - Save as `public/og-preco-boli.png`
 
-**4. Edit `src/index.css`**
-- Add `.article-prose` class with:
-  - Teal-colored `h2`/`h3` headings with subtle bottom border
-  - Increased paragraph spacing and line height
-  - Styled blockquotes with left teal border
-  - Teal bullet markers on lists
-  - Better `strong` tag visibility
+3. **Update the database** to set the article's `image_url` field to the article-specific OG image path so it's used in the `og:image` meta tag
 
-**5. Install `@tailwindcss/typography` + update `tailwind.config.ts`**
-- Add plugin for base prose defaults
-- Configure prose color overrides in the plugin config
+4. **Update SEO component** if needed to ensure the article image is passed through as `ogImage`
 
-### No database changes needed
-All articles share the same `Article.tsx` template — existing and future articles automatically get the new layout.
+### After deployment
+You'll need to clear Facebook's cache of the old (broken) preview by pasting the article URL into Facebook's [Sharing Debugger](https://developers.facebook.com/tools/debug/) and clicking "Scrape Again".
+
+### Files affected
+| File | Action |
+|------|--------|
+| `public/og-default.png` | Create — default branded OG image |
+| `public/og-preco-boli.png` | Create — article-specific OG image |
+| `src/pages/Article.tsx` | Minor edit — pass article image to SEO `ogImage` prop |
 
