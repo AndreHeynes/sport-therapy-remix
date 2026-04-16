@@ -35,10 +35,10 @@ Deno.serve(async (req) => {
       url: siteUrl,
       redirectUrl: siteUrl,
     }), {
-      headers: {
-        "content-type": "text/html; charset=utf-8",
-        "cache-control": "public, max-age=300",
-      },
+      headers: new Headers({
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "public, max-age=300",
+      }),
     });
   }
 
