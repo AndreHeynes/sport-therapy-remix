@@ -187,7 +187,6 @@ const Article = () => {
                 />
               </div>
             )}
-          <div className="max-w-3xl mx-auto">
             {/* Excerpt highlight */}
             <div className="border-l-4 border-brand-teal bg-brand-teal/5 rounded-r-lg p-5 mb-10">
               <p className="text-brand-charcoal/80 text-lg leading-relaxed italic font-body">
