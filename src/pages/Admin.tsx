@@ -30,7 +30,7 @@ const emptyArticle = {
 
 const Admin = () => {
   const { user, isAdmin, loading, signIn, signOut } = useAuth();
-  const { data: articles, isLoading: articlesLoading } = useAllArticles();
+  const { data: articles, isLoading: articlesLoading } = useAllArticles({ enabled: !loading && !!user && isAdmin });
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const navigate = useNavigate();
