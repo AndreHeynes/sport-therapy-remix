@@ -35,10 +35,10 @@ Deno.serve(async (req) => {
       url: siteUrl,
       redirectUrl: siteUrl,
     }), {
-      headers: new Headers({
-        "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "public, max-age=300",
-      }),
+      headers: {
+        "content-type": "text/html; charset=utf-8",
+        "cache-control": "public, max-age=300",
+      },
     });
   }
 
@@ -52,10 +52,10 @@ Deno.serve(async (req) => {
     url: articleUrl,
     redirectUrl: articleUrl,
   }), {
-    headers: new Headers({
-      "Content-Type": "text/html; charset=utf-8",
-      "Cache-Control": "public, max-age=300",
-    }),
+    headers: {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": "public, max-age=300",
+    },
   });
 });
 
