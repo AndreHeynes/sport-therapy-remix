@@ -27,6 +27,9 @@ const SEO = ({ title, description, keywords, canonical, ogImage, type = 'website
   const siteDescription = description || defaultDescriptions[language];
   const siteUrl = 'https://sportandbodyterapia.org';
 
+  const defaultOgImage = `${siteUrl}/og-default.png`;
+  const imageUrl = ogImage || defaultOgImage;
+
   return (
     <Helmet>
       <title>{siteTitle}</title>
@@ -40,6 +43,11 @@ const SEO = ({ title, description, keywords, canonical, ogImage, type = 'website
       <meta property="og:description" content={siteDescription} />
       <meta property="og:url" content={canonical || siteUrl} />
       <meta property="og:site_name" content="Šport & Body Terapia" />
+      <meta property="og:image" content={imageUrl} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={siteTitle} />
+      <meta name="twitter:description" content={siteDescription} />
+      <meta name="twitter:image" content={imageUrl} />
     </Helmet>
   );
 };
