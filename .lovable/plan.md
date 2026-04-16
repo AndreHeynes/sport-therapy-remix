@@ -1,33 +1,41 @@
 
 
-## Plan: Generate OG Image for Facebook Previews
+## Plan: Fix Facebook OG Warnings + Generate OG Images for All Blogs
 
-### Problem
-Facebook isn't showing a nice preview card when sharing the blog URL because there's no actual `og-default.png` image file — the SEO component references it but the file doesn't exist.
+### Facebook warnings explained
+
+1. **`og:url` missing** — The SEO component already outputs `og:url` (line 44), but it relies on the `canonical` prop being passed. If `canonical` isn't set, it falls back to the site root. This is likely a Facebook caching issue from before the fix, but I'll make it more robust by always outputting `og:url` based on the current path.
+
+2. **`fb:app_id` missing** — Facebook recommends this but it's **not required** for preview cards to work. It enables Facebook Insights for your domain. You'd need to create a Facebook App at developers.facebook.com to get one. I can add the meta tag if you provide an app ID, but **the preview card will work without it**.
 
 ### What I'll do
 
-1. **Generate a branded OG image** (1200×630px, the Facebook-recommended size) using AI image generation
-   - Teal gradient background matching the brand
-   - "Šport & Body Terapia" branding
-   - Clean, professional design with the site name and tagline
-   - Save as `public/og-default.png`
+1. **Fix `og:url`** in `SEO.tsx` — always output a proper `og:url` even when `canonical` isn't explicitly passed (use `window.location` as fallback)
 
-2. **Generate an article-specific OG image** for the pain blog post
-   - Same brand style but with the article title
-   - Save as `public/og-preco-boli.png`
+2. **Generate 4 OG images** (1200×630px, teal branded) for the remaining blogs:
+   - `/og-understanding-sciatica.png` — Sciatica article
+   - `/og-exercises-lower-back.png` — Lower back exercises
+   - `/og-headache-management.png` — Headache management
+   - `/og-sports-injury-prevention.png` — Sports injury prevention
 
-3. **Update the database** to set the article's `image_url` field to the article-specific OG image path so it's used in the `og:image` meta tag
+3. **Update all 4 articles** in the database to point to their new OG images
 
-4. **Update SEO component** if needed to ensure the article image is passed through as `ogImage`
+4. **Fix Article.tsx `ogImage` logic** — currently the emoji check (`article.image !== '📝'`) won't catch all emoji values (🦴, 🏋️, 🧠, 🏃). I'll update the logic to check if the image starts with `/` (a real path) rather than checking against specific emojis.
 
-### After deployment
-You'll need to clear Facebook's cache of the old (broken) preview by pasting the article URL into Facebook's [Sharing Debugger](https://developers.facebook.com/tools/debug/) and clicking "Scrape Again".
+### About `fb:app_id`
+This is optional. If you want Facebook Insights tracking, you'll need to create a Facebook App at developers.facebook.com and give me the App ID. The preview cards will work fine without it.
 
 ### Files affected
 | File | Action |
 |------|--------|
-| `public/og-default.png` | Create — default branded OG image |
-| `public/og-preco-boli.png` | Create — article-specific OG image |
-| `src/pages/Article.tsx` | Minor edit — pass article image to SEO `ogImage` prop |
+| `src/components/SEO.tsx` | Fix `og:url` fallback |
+| `src/pages/Article.tsx` | Fix image detection logic |
+| `public/og-understanding-sciatica.png` | Create |
+| `public/og-exercises-lower-back.png` | Create |
+| `public/og-headache-management.png` | Create |
+| `public/og-sports-injury-prevention.png` | Create |
+| Database: `articles` table | Update `image` field for 4 articles |
+
+### After deployment
+Re-scrape all article URLs in Facebook's [Sharing Debugger](https://developers.facebook.com/tools/debug/) to refresh the cached previews.
 
