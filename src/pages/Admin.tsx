@@ -47,9 +47,19 @@ const Admin = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginLoading(true);
-    const { error } = await signIn(email, password);
-    if (error) {
-      toast({ title: 'Login failed', description: error.message, variant: 'destructive' });
+    if (isSignup) {
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        toast({ title: 'Signup failed', description: error.message, variant: 'destructive' });
+      } else {
+        toast({ title: 'Account created!', description: 'You can now sign in. An admin will assign your role.' });
+        setIsSignup(false);
+      }
+    } else {
+      const { error } = await signIn(email, password);
+      if (error) {
+        toast({ title: 'Login failed', description: error.message, variant: 'destructive' });
+      }
     }
     setLoginLoading(false);
   };
