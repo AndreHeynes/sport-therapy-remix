@@ -180,7 +180,7 @@ const Article = () => {
             {article.image && (
               <div className="mb-10 rounded-xl overflow-hidden shadow-lg">
                 <img
-                  src={article.image}
+                  src={resolvedImage}
                   alt={title}
                   className="w-full h-auto object-cover"
                   loading="eager"
