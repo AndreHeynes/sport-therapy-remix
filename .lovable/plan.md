@@ -1,47 +1,61 @@
 
 
-## Plan: Restore the live site (HTTP 421 fix)
+## Plan: Fix expired Recover link in Lovable Domains
 
-### What's broken
-Every request to `sportandbodyterapia.org` and `www.sportandbodyterapia.org` returns **HTTP 421** from Cloudflare. The site is fully offline. This is why preview images and the site itself aren't loading.
+### What's happening
+When you click **Recover** on the disconnected domain in Project Settings → Domains, Lovable shows a "link expired" error. This is a known Lovable behavior — the recovery token has a short TTL, and once expired the only path forward is to fully **remove and re-add** the domain. The Recover button cannot be reissued.
 
-DNS records in Cloudflare are correct. The issue is on Lovable's side: the custom domain is not in **Active** status, so Lovable's edge refuses the TLS handshake for your hostname.
+### Fix steps (do in this order)
 
-### Fix steps (you do these in Lovable, not in code)
-
-**Step 1 — Check domain status in Lovable**
+**Step 1 — Remove both domains from Lovable**
 1. Open **Project Settings → Domains**
-2. Look at the status of `sportandbodyterapia.org` and `www.sportandbodyterapia.org`
-3. Status will be one of: Active / Verifying / Setting up / Offline / Failed / Action required / Removed
+2. For `sportandbodyterapia.org`: click the **⋯** menu → **Remove**
+3. For `www.sportandbodyterapia.org`: click the **⋯** menu → **Remove**
+4. Confirm removal for both
 
-**Step 2 — Act based on status**
+**Step 2 — Clean Cloudflare DNS before re-adding**
+The old `_lovable` TXT records will no longer match anything. In **Cloudflare → DNS → Records**:
+1. Delete **all** `_lovable` TXT records (apex)
+2. Delete any `_lovable.www` TXT record
+3. Keep the two A records (`@` and `www` → `185.158.133.1`, both proxied) — these are still valid
+4. Remove any AAAA or stray CNAME records on `@` or `www`
 
-| Status | Action |
-|---|---|
-| **Active** | Domain should work. If it doesn't, click `⋯ → Reconnect` to force re-provisioning |
-| **Offline / Failed** | Click **Retry** — re-runs SSL provisioning |
-| **Action required** | Click **Complete Setup** and finish the flow |
-| **Verifying / Setting up** | Wait — but if stuck >1 hour, remove and re-add the domain |
-| **Removed** | Re-add the domain via **Connect Domain** |
+**Step 3 — Re-add the apex domain**
+1. In Lovable: **Domains → Connect Domain**
+2. Enter `sportandbodyterapia.org`
+3. Expand **Advanced** → check **"Domain uses Cloudflare or a similar proxy"**
+4. Lovable will show **fresh** DNS records (new TXT verification value)
+5. Add the new TXT record in Cloudflare exactly as shown
+6. Click **Verify** in Lovable
 
-**Step 3 — Confirm proxy mode matches**
-When connecting/reconnecting, in the **Advanced** section, make sure **"Domain uses Cloudflare or a similar proxy"** is **checked**. Your DNS shows the records are Proxied (orange cloud), so Lovable must be told the same. A mismatch here is a common cause of 421.
+**Step 4 — Re-add the www subdomain**
+1. **Connect Domain** again
+2. Enter `www.sportandbodyterapia.org`
+3. Same Advanced → proxy checkbox
+4. Add the new `_lovable.www` TXT record in Cloudflare
+5. Click **Verify**
 
-**Step 4 — Clean up duplicate verification records**
-Your DNS shows two `_lovable` TXT records. Once the domain is Active again, remove the older/duplicate one (keep only the value Lovable currently shows in its verification instructions). Leaving stale verification records is harmless but tidier to clean up.
+**Step 5 — Set primary**
+Once both show **Active**, mark `sportandbodyterapia.org` (or whichever you prefer) as **Primary**. The other will redirect to it.
 
-### Verification (I'll run after you've done the above)
+**Step 6 — I verify**
+After both domains show Active in Lovable, I'll run:
 ```
 curl -I https://sportandbodyterapia.org/
 curl -I https://www.sportandbodyterapia.org/
+curl -A "facebookexternalhit/1.1" https://sportandbodyterapia.org/article/preco-boli-pochopenie-bolesti
 ```
-Both should return **HTTP 200**, not 421.
+Expected: HTTP 200 on the first two, full article OG HTML on the third.
 
-Once the site is back up, the Facebook Debugger investigation can resume — but the site needs to be reachable first or nothing else matters.
+### Why Recover failed
+Lovable's recovery flow uses a signed token tied to the original disconnect event. Once expired (typically 24–48h), the only supported recovery path is removal + re-add. There is no "resend recovery link" option in the UI today.
 
 ### What I won't change
-No code changes. The codebase is fine. This is purely a domain/SSL provisioning issue on the hosting side.
+No code. Codebase is healthy. The edge function and Worker are ready and waiting — they just need the domain back online to receive traffic.
 
-### About the preview images
-The Lovable preview (`id-preview--*.lovable.app`) uses a different domain and shouldn't be affected by this 421 issue. If preview images are also broken, that's a separate problem — please share a screenshot of the preview with the browser console open (F12 → Console tab) so I can see what's failing there.
+### After domain is restored
+We resume the Facebook Debugger investigation:
+1. Confirm only `og-bot-router` is bound to `*sportandbodyterapia.org/article/*` (delete `og-bot-proxy`)
+2. Re-scrape in Facebook Debugger → Scrape Again twice
+3. Article OG tags should now appear
 
