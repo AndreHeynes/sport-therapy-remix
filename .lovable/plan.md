@@ -1,50 +1,56 @@
+## Plan: Fix OG metadata for shared articles — without Cloudflare Worker
 
+### Worker code review — pass-through is safe ✅
+Your worker correctly passes through:
+- Non-`/article/*` paths → fetch origin
+- Non-bot user agents → fetch origin
 
-## Plan: Test worker interception now that everything is deployed
+So binding it as a Custom Domain wouldn't immediately break the site for users. **But it would break Lovable's SSL-for-SaaS binding**, which is why I want to avoid that path.
 
-### Current state
-- ✅ Worker `og-bot-router` re-deployed (version `4ca85d80`, 2 min ago)
-- ✅ Both article routes bound and active
-- ✅ Apex `sportandbodyterapia.org` Active in Lovable
-- ⏳ `www.sportandbodyterapia.org` Setting up (DNS propagating)
+### Root cause hypothesis
+Lovable connects custom domains via **Cloudflare for SaaS**. When `sportandbodyterapia.org` was added to Lovable, Lovable's Cloudflare account claims the hostname at the SNI/SSL level. Even though your zone has Worker Routes for `sportandbodyterapia.org/article/*`, the request is intercepted by Lovable's edge before your zone's worker ever sees it. This perfectly matches all symptoms:
+- Traffic reaches Lovable (`x-deployment-id` header present) ✅
+- Worker logs show zero entries ✅
+- Routes saved correctly but never fire ✅
+- Direct `*.workers.dev` URL works fine ✅
 
-### Step 1 — I run live curl tests on the apex domain
+### Recommended fix: switch shared URLs to the edge function
+
+Your `og-metadata` edge function already does exactly what bots need:
+- Returns OG-tagged HTML with article-specific title/image/description
+- Includes `<meta http-equiv="refresh">` and JS `window.location.replace()` to bounce real users to the article instantly
+
+So instead of fighting Cloudflare routing, **just share the edge function URL on social media**. Bots see OG tags; humans get redirected in <100ms.
+
+Edge function URL format:
 ```
-curl -sI -A "facebookexternalhit/1.1" https://sportandbodyterapia.org/article/preco-boli-pochopenie-bolesti
-curl -s  -A "facebookexternalhit/1.1" https://sportandbodyterapia.org/article/preco-boli-pochopenie-bolesti | grep -iE "og:title|og:image|og:url"
-```
-
-**Success indicators:**
-- Headers should NOT contain `x-deployment-id` (that's Lovable origin); should show `cf-ray` only
-- `og:title` = the Slovak article title (not site default)
-- `og:image` = article-specific image URL (not `/og-default.png`)
-- `og:url` = full article URL
-
-**Browser control test** (must still work normally):
-```
-curl -sI https://sportandbodyterapia.org/article/preco-boli-pochopenie-bolesti
-```
-Expected: passes through to Lovable's React app for real users.
-
-### Step 2 — Wait for www and re-test
-Once `www.sportandbodyterapia.org` shows Active in Lovable (refresh the Domains page in a few minutes):
-```
-curl -s -A "facebookexternalhit/1.1" https://www.sportandbodyterapia.org/article/preco-boli-pochopenie-bolesti | grep -iE "og:title|og:image"
+https://tlodzjsmaxkugmzhzdze.supabase.co/functions/v1/og-metadata?slug=<slug>
 ```
 
-### Step 3 — Facebook Debugger re-scrape
-If apex curl passes:
-1. Open https://developers.facebook.com/tools/debug/
-2. Enter `https://sportandbodyterapia.org/article/preco-boli-pochopenie-bolesti`
-3. Click **Scrape Again** **twice** (Facebook caches the first response — second scrape shows the truth)
-4. Article-specific title and image should appear in the preview
+### Code change (default mode)
 
-### Step 4 — If apex curl STILL returns default OG tags
-Diagnostic options I'll explore:
-- Check Cloudflare Worker **Logs/Observability** tab for any incoming requests during the curl test (you can enable real-time logs and I'll tell you what to look for)
-- Verify the bot-detection regex in the worker actually matches `facebookexternalhit/1.1`
-- Check if Cloudflare cache rules are intercepting before the worker runs (unlikely on a new domain, but possible)
+Once approved, I'll switch to default mode and:
 
-### What I won't change
-No project code. The codebase, edge function, and Worker are all ready. This is pure verification.
+1. **Edit `src/components/ArticleShareButtons.tsx`**
+   - Add a `shareUrl` derived from the article slug → edge function URL
+   - Use `shareUrl` for WhatsApp, Facebook, Twitter/X, LinkedIn, Email, and Copy Link buttons
+   - Keep the user-facing `url` prop unchanged for any in-app navigation
 
+2. **Verify in `src/pages/Article.tsx`**
+   - Confirm the slug is passed correctly to ArticleShareButtons
+   - May need to pass `slug` as a separate prop alongside `url`
+
+### What I won't touch
+- Cloudflare Worker (can be deleted later, or left dormant — it's not hurting anything)
+- DNS records
+- Lovable domain bindings
+- The SEO component (still serves correct metadata to crawlers that fetch the canonical URL directly)
+
+### Trade-offs to be aware of
+- **Pro**: Works immediately, no infra changes, zero risk to live site
+- **Pro**: Edge function is already deployed and tested
+- **Con**: Shared links visible in chat apps will show the long Supabase URL (until the redirect happens). Users who hover see the Supabase domain, not yours
+- **Mitigation**: We could later set up a short URL like `https://sportandbodyterapia.org/s/<slug>` that proxies to the edge function — but that's a follow-up if the visual matters
+
+### Approve to proceed
+Reply approve and I'll switch to default mode and make the single-file change to `ArticleShareButtons.tsx`. Done in ~30 seconds, then you can re-test in Facebook Debugger using the new share URL format.

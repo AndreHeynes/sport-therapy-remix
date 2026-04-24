@@ -9,15 +9,33 @@ interface ArticleShareButtonsProps {
   title: string;
 }
 
+// Edge function URL that serves OG-tagged HTML to crawlers
+// and instantly redirects real users to the article page.
+// Use this for ALL social shares so Facebook/WhatsApp/LinkedIn/etc.
+// pick up article-specific title, image, and description.
+const buildShareUrl = (articleUrl: string): string => {
+  try {
+    const u = new URL(articleUrl);
+    const match = u.pathname.match(/^\/article\/([^/?#]+)/);
+    if (!match) return articleUrl;
+    const slug = match[1];
+    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+    return `https://${projectId}.supabase.co/functions/v1/og-metadata?slug=${encodeURIComponent(slug)}`;
+  } catch {
+    return articleUrl;
+  }
+};
+
 const ArticleShareButtons = ({ url, title }: ArticleShareButtonsProps) => {
   const { language } = useLanguage();
   const [copied, setCopied] = React.useState(false);
 
-  const encodedUrl = encodeURIComponent(url);
+  const shareUrl = buildShareUrl(url);
+  const encodedShareUrl = encodeURIComponent(shareUrl);
 
   const shareOnFacebook = () => {
     window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      `https://www.facebook.com/sharer/sharer.php?u=${encodedShareUrl}`,
       '_blank',
       'width=600,height=400'
     );
@@ -25,7 +43,7 @@ const ArticleShareButtons = ({ url, title }: ArticleShareButtonsProps) => {
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       toast.success(
         language === 'sk' ? 'Odkaz skopírovaný!' : 'Link copied!'
