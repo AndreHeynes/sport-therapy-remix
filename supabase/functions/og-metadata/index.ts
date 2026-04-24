@@ -73,7 +73,6 @@ function buildHtml(meta: {
 <html lang="sk">
 <head>
   <meta charset="utf-8" />
-  <meta http-equiv="refresh" content="0;url=${esc(meta.redirectUrl)}" />
   <title>${esc(meta.title)}</title>
   <meta name="description" content="${esc(meta.description)}" />
   <meta property="og:type" content="article" />
