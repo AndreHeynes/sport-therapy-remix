@@ -39,7 +39,6 @@ const Admin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
-  const [isSignup, setIsSignup] = useState(false);
 
   const [editing, setEditing] = useState<Partial<Article> | null>(null);
   const [saving, setSaving] = useState(false);
@@ -47,19 +46,9 @@ const Admin = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginLoading(true);
-    if (isSignup) {
-      const { error } = await supabase.auth.signUp({ email, password });
-      if (error) {
-        toast({ title: 'Signup failed', description: error.message, variant: 'destructive' });
-      } else {
-        toast({ title: 'Account created!', description: 'You can now sign in. An admin will assign your role.' });
-        setIsSignup(false);
-      }
-    } else {
-      const { error } = await signIn(email, password);
-      if (error) {
-        toast({ title: 'Login failed', description: error.message, variant: 'destructive' });
-      }
+    const { error } = await signIn(email, password);
+    if (error) {
+      toast({ title: 'Login failed', description: error.message, variant: 'destructive' });
     }
     setLoginLoading(false);
   };
@@ -134,7 +123,7 @@ const Admin = () => {
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle className="text-2xl text-center font-heading">
-              {isSignup ? 'Create Admin Account' : 'Admin Login'}
+              Admin Login
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -142,12 +131,9 @@ const Admin = () => {
               <Input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
               <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
               <Button type="submit" disabled={loginLoading} className="w-full bg-brand-teal hover:bg-brand-teal-dark">
-                {loginLoading ? (isSignup ? 'Creating account...' : 'Signing in...') : (isSignup ? 'Create Account' : 'Sign In')}
+                {loginLoading ? 'Signing in...' : 'Sign In'}
               </Button>
             </form>
-            <Button variant="link" onClick={() => setIsSignup(!isSignup)} className="w-full mt-2">
-              {isSignup ? 'Already have an account? Sign in' : 'Need an account? Sign up'}
-            </Button>
             <Button variant="ghost" onClick={() => navigate('/')} className="w-full mt-2">
               <ArrowLeft className="mr-2" size={16} />
               {language === 'sk' ? 'Späť na stránku' : 'Back to site'}
