@@ -1,0 +1,25 @@
+# Šport & Body Terapia
+
+> Professional physiotherapy clinic in Dubnica nad Váhom, Slovakia, led by André Heynes — 25+ years of international experience in musculoskeletal, sports injury, and headache disorder rehabilitation. Bilingual (SK/EN), evidence-based, active recovery focused (PEACE & LOVE protocol).
+
+## Pages
+
+- [Home](/): Overview of services, practitioner, and contact.
+- [About](/about): André Heynes — biography, qualifications, international journey.
+- [Blog](/blog): Bilingual articles and patient guides on pain, recovery, and rehabilitation.
+- [Medical Disclaimer](/medical-disclaimer): Clinical scope and disclaimer.
+
+## Articles
+
+- [Prečo bolí? Pochopenie bolesti](/article/preco-boli-pochopenie-bolesti): Slovak guide to understanding pain.
+- [Understanding Sciatica](/article/understanding-sciatica): Causes, symptoms, and management.
+- [3 Simple Exercises for Lower Back Pain](/article/3-simple-exercises-for-lower-back-pain): Self-care exercises.
+- [Sports Injury Prevention](/article/sports-injury-prevention): Prevention strategies for athletes.
+- [Headache Management](/article/headache-management): Cervicogenic and tension headache care.
+
+## Optional
+
+- [Privacy Policy](/privacy-policy)
+- [Cookie Policy](/cookie-policy)
+- [GDPR Compliance](/gdpr-compliance)
+- [Terms of Service](/terms-of-service)
