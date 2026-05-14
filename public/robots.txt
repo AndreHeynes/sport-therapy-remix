@@ -13,4 +13,6 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://tlodzjsmaxkugmzhzdze.supabase.co/functions/v1/sitemap
+Disallow: /admin
+
+Sitemap: https://sportandbodyterapia.org/sitemap.xml

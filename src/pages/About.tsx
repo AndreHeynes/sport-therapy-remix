@@ -1,6 +1,6 @@
 import React from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { Helmet } from 'react-helmet-async';
+import SEO from '@/components/SEO';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -88,10 +88,11 @@ const About = () => {
 
   return (
     <HelmetProvider>
-      <Helmet>
-        <title>{c.pageTitle} | Šport & Body Terapia</title>
-        <meta name="description" content={c.metaDesc} />
-      </Helmet>
+      <SEO
+        title={c.pageTitle}
+        description={c.metaDesc}
+        canonical="https://sportandbodyterapia.org/about"
+      />
       <div className="min-h-screen bg-background font-body">
         <Header />
         <main>

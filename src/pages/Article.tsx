@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import SEO from '@/components/SEO';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -118,6 +118,14 @@ const Article = () => {
           canonical={articleUrl}
           type="article"
           ogImage={resolvedImage}
+        />
+        <HelmetArticleSchema
+          title={title}
+          excerpt={excerpt}
+          image={resolvedImage}
+          url={articleUrl}
+          datePublished={article.created_at}
+          dateModified={(article as any).updated_at || article.created_at}
         />
 
         {/* Reading progress bar */}
@@ -269,6 +277,38 @@ const Article = () => {
         <Footer />
       </div>
     </HelmetProvider>
+  );
+};
+
+
+const HelmetArticleSchema = ({ title, excerpt, image, url, datePublished, dateModified }: {
+  title: string;
+  excerpt: string;
+  image?: string;
+  url: string;
+  datePublished: string;
+  dateModified: string;
+}) => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description: excerpt,
+    image: image ? [image] : undefined,
+    datePublished,
+    dateModified,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    author: { "@type": "Person", name: "André Heynes" },
+    publisher: {
+      "@type": "Organization",
+      name: "Šport & Body Terapia",
+      logo: { "@type": "ImageObject", url: "https://sportandbodyterapia.org/og-default.png" },
+    },
+  };
+  return (
+    <Helmet>
+      <script type="application/ld+json">{JSON.stringify(schema)}</script>
+    </Helmet>
   );
 };
 
