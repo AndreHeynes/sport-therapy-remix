@@ -280,4 +280,36 @@ const Article = () => {
   );
 };
 
+
+const HelmetArticleSchema = ({ title, excerpt, image, url, datePublished, dateModified }: {
+  title: string;
+  excerpt: string;
+  image?: string;
+  url: string;
+  datePublished: string;
+  dateModified: string;
+}) => {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description: excerpt,
+    image: image ? [image] : undefined,
+    datePublished,
+    dateModified,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    author: { "@type": "Person", name: "André Heynes" },
+    publisher: {
+      "@type": "Organization",
+      name: "Šport & Body Terapia",
+      logo: { "@type": "ImageObject", url: "https://sportandbodyterapia.org/og-default.png" },
+    },
+  };
+  return (
+    <Helmet>
+      <script type="application/ld+json">{JSON.stringify(schema)}</script>
+    </Helmet>
+  );
+};
+
 export default Article;
