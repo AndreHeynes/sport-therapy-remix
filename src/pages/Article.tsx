@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import SEO from '@/components/SEO';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -118,6 +118,14 @@ const Article = () => {
           canonical={articleUrl}
           type="article"
           ogImage={resolvedImage}
+        />
+        <HelmetArticleSchema
+          title={title}
+          excerpt={excerpt}
+          image={resolvedImage}
+          url={articleUrl}
+          datePublished={article.created_at}
+          dateModified={(article as any).updated_at || article.created_at}
         />
 
         {/* Reading progress bar */}
