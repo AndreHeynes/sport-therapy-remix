@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { sk } from 'date-fns/locale';
 import { CalendarDays, Clock } from 'lucide-react';
+import { getDisplayImageUrl } from '@/lib/images';
 
 const Blog = () => {
   const { language, t } = useLanguage();
@@ -47,11 +48,7 @@ const Blog = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {articles.map((article) => {
-                const imageUrl = article.image
-                  ? article.image.startsWith('http')
-                    ? article.image
-                    : `https://sportandbodyterapia.org${article.image.startsWith('/') ? '' : '/'}${article.image}`
-                  : null;
+                const imageUrl = getDisplayImageUrl(article.image);
 
                 return (
                   <Card

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
+import { getDisplayImageUrl } from '@/lib/images';
 
 const newsletterSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email address" }).max(255)
@@ -65,11 +66,7 @@ const PatientResourcesSection = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {articles?.map((article) => {
-              const imageUrl = article.image
-                ? article.image.startsWith('http')
-                  ? article.image
-                  : `https://sportandbodyterapia.org${article.image.startsWith('/') ? '' : '/'}${article.image}`
-                : null;
+              const imageUrl = getDisplayImageUrl(article.image);
 
               return (
                 <Card key={article.id} className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-0 shadow-md overflow-hidden">
