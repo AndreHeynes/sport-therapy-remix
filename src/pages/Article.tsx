@@ -15,6 +15,7 @@ import { useArticleBySlug } from '@/hooks/useArticles';
 import { format } from 'date-fns';
 import { sk } from 'date-fns/locale';
 import ArticleShareButtons from '@/components/ArticleShareButtons';
+import { getAbsoluteImageUrl, getDisplayImageUrl } from '@/lib/images';
 
 const Article = () => {
   const { articleId } = useParams<{ articleId: string }>();
@@ -103,11 +104,8 @@ const Article = () => {
   const readTime = language === 'sk' ? article.read_time_sk : article.read_time_en;
   const siteUrl = 'https://sportandbodyterapia.org';
   const articleUrl = `${siteUrl}/article/${article.slug}`;
-  const resolvedImage = article.image
-    ? article.image.startsWith('http')
-      ? article.image
-      : `${siteUrl}${article.image.startsWith('/') ? '' : '/'}${article.image}`
-    : undefined;
+  const displayImage = getDisplayImageUrl(article.image);
+  const resolvedImage = getAbsoluteImageUrl(article.image, siteUrl);
 
   return (
     <HelmetProvider>
@@ -188,7 +186,7 @@ const Article = () => {
             {article.image && (
               <div className="mb-10 rounded-xl overflow-hidden shadow-lg">
                 <img
-                  src={resolvedImage}
+                  src={displayImage || resolvedImage}
                   alt={title}
                   className="w-full h-auto object-cover"
                   loading="eager"
