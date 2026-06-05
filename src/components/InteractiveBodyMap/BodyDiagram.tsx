@@ -18,30 +18,40 @@ const BodyDiagram: React.FC<BodyDiagramProps> = ({ bodyParts, selectedPart, onPa
           {/* Body silhouette image */}
           <img
             src={bodySilhouette}
-            alt="Body diagram"
+            alt={language === 'sk'
+              ? 'Interaktívny diagram ľudského tela s klikateľnými bodmi pre rôzne oblasti'
+              : 'Interactive human body diagram with clickable hotspots for different regions'}
             className="absolute inset-0 w-full h-full object-contain opacity-80"
           />
 
           {/* Clickable body part hotspots */}
-          {bodyParts.map((part) => (
-            <button
-              key={part.id}
-              onClick={() => onPartClick(part.id)}
-              className={`absolute w-8 h-8 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 flex items-center justify-center text-xs font-bold
-                ${selectedPart === part.id 
-                  ? 'bg-brand-teal text-white scale-125 shadow-glow ring-2 ring-brand-teal/50' 
-                  : 'bg-brand-teal/20 text-brand-teal hover:bg-brand-teal/40 hover:scale-110'
-                }`}
-              style={{ 
-                left: `${part.x}%`, 
-                top: `${(part.y / 100) * 100}%` 
-              }}
-              title={part.name}
-            >
-              <div className="w-3 h-3 rounded-full bg-current" />
-            </button>
-          ))}
+          {bodyParts.map((part) => {
+            const label = language === 'sk'
+              ? `Zobraziť stavy pre: ${part.name}`
+              : `Show conditions for ${part.name}`;
+            return (
+              <button
+                key={part.id}
+                onClick={() => onPartClick(part.id)}
+                aria-label={label}
+                aria-pressed={selectedPart === part.id}
+                className={`absolute w-8 h-8 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 flex items-center justify-center text-xs font-bold
+                  ${selectedPart === part.id
+                    ? 'bg-brand-teal text-white scale-125 shadow-glow ring-2 ring-brand-teal/50'
+                    : 'bg-brand-teal/20 text-brand-teal hover:bg-brand-teal/40 hover:scale-110'
+                  }`}
+                style={{
+                  left: `${part.x}%`,
+                  top: `${(part.y / 100) * 100}%`
+                }}
+                title={part.name}
+              >
+                <div className="w-3 h-3 rounded-full bg-current" />
+              </button>
+            );
+          })}
         </div>
+
         <p className="text-center text-sm text-gray-500 mt-4">
           {language === 'sk' ? 'Kliknite na bod pre viac informácií' : 'Click a point for more info'}
         </p>

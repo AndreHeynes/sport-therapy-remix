@@ -17,13 +17,20 @@ const SEO = ({ title, description, keywords, canonical, ogImage, type = 'website
     sk: 'Šport & Body Terapia - Fyzioterapia Dubnica nad Váhom',
     en: 'Sport & Body Therapy - Physiotherapy Dubnica nad Váhom'
   };
-  
+
+  // Short site-name suffix for subpages so total <title> stays under 60 chars
+  const shortSiteName = {
+    sk: 'Šport & Body Terapia',
+    en: 'Sport & Body Therapy'
+  };
+
   const defaultDescriptions = {
     sk: 'Profesionálna fyzioterapia v Dubnici nad Váhom. André Heynes - 25+ rokov skúseností.',
     en: 'Professional physiotherapy in Dubnica nad Váhom. André Heynes - 25+ years experience.'
   };
 
-  const siteTitle = title ? `${title} | ${defaultTitles[language]}` : defaultTitles[language];
+  const siteTitle = title ? `${title} | ${shortSiteName[language]}` : defaultTitles[language];
+
   const siteDescription = description || defaultDescriptions[language];
   const siteUrl = 'https://sportandbodyterapia.org';
 
