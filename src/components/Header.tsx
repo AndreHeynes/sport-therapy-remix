@@ -51,9 +51,11 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+            <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1" role="group" aria-label={language === 'sk' ? 'Jazyk' : 'Language'}>
               <button
                 onClick={() => setLanguage('sk')}
+                aria-label="Slovenčina"
+                aria-pressed={language === 'sk'}
                 className={`px-3 py-1 rounded-md text-sm font-medium transition-all duration-300 ${
                   language === 'sk'
                     ? 'btn-shine text-white shadow-glow'
@@ -64,6 +66,8 @@ const Header = () => {
               </button>
               <button
                 onClick={() => setLanguage('en')}
+                aria-label="English"
+                aria-pressed={language === 'en'}
                 className={`px-3 py-1 rounded-md text-sm font-medium transition-all duration-300 ${
                   language === 'en'
                     ? 'btn-shine text-white shadow-glow'
@@ -73,6 +77,7 @@ const Header = () => {
                 EN
               </button>
             </div>
+
 
             <Button 
               className="hidden lg:flex btn-shine text-white font-medium px-6 py-2 shadow-floating hover:shadow-glow-lg transition-all duration-300"
@@ -84,14 +89,21 @@ const Header = () => {
             <button
               className="lg:hidden text-brand-charcoal hover:text-brand-teal transition-all duration-300 hover:scale-110"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen
+                ? (language === 'sk' ? 'Zavrieť menu' : 'Close menu')
+                : (language === 'sk' ? 'Otvoriť menu' : 'Open menu')}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
+
           </div>
         </div>
 
         {isMenuOpen && (
-          <nav className="lg:hidden mt-4 pb-4 border-t border-white/20">
+          <nav id="mobile-menu" className="lg:hidden mt-4 pb-4 border-t border-white/20" aria-label={language === 'sk' ? 'Mobilná navigácia' : 'Mobile navigation'}>
+
             <div className="pt-4 space-y-3 glass-card">
               {navigationItems.map((item) => (
                 <button

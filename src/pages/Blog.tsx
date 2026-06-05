@@ -23,9 +23,12 @@ const Blog = () => {
       <div className="min-h-screen bg-background font-body">
         <SEO
           title={language === 'sk' ? 'Blog' : 'Blog'}
-          description={language === 'sk' ? 'Články a zdroje pre pacientov' : 'Articles and patient resources'}
+          description={language === 'sk'
+            ? 'Články, návody a zdroje pre pacientov o fyzioterapii, manažmente bolesti, prevencii zranení a aktívnej rekonvalescencii.'
+            : 'Articles, guides and patient resources covering physiotherapy, pain management, injury prevention and active recovery.'}
           canonical="https://sportandbodyterapia.org/blog"
         />
+
         <Header />
         <main className="container mx-auto px-4 py-12">
           <div className="text-center mb-12">
