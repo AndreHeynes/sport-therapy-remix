@@ -75,4 +75,19 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://sportandbodyterapia.org/article/razova-vlna-co-to-je</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sportandbodyterapia.org/article/shockwave-dual-razova-vlna-diatermia</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://sportandbodyterapia.org/article/trijalux-artrosikjalux-bezihlova-liecba</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
